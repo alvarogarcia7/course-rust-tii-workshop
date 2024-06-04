@@ -13,6 +13,10 @@ fn f1<'a>(x: &'a mut (u32, u32), b: bool) -> &'a mut u32 {
     };
 }
 
+fn f2(mut slice: &mut [u32], index: usize) -> &mut u32 {
+    &mut slice[index]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -27,5 +31,16 @@ mod tests {
     fn f1_accceptes_a_mutable_reference__case_2() {
         let mut x = (0u32, 1u32);
         assert_eq!(*f1(&mut x, false), 0u32);
+    }
+
+    #[test]
+    fn f2_returns_first() {
+        let mut input = vec![0, 1, 2, 3];
+        assert_eq!(*f2(&mut input, 0), 0u32);
+    }
+    #[test]
+    fn f2_returns_second() {
+        let mut input = vec![0, 1, 2, 3];
+        assert_eq!(*f2(&mut input, 1), 1u32);
     }
 }
