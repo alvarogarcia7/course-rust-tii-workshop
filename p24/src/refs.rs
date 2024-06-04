@@ -24,23 +24,25 @@ mod tests {
     #[test]
     fn f1_acccepts_a_mutable_reference__case_1() {
         let mut x = (0u32, 1u32);
-        assert_eq!(*f1(&mut x, true), 1u32);
+        // assert_eq!(*f1(&mut x, true), 1u32);
+        assert_eq!(f1(&mut x, true), &mut 1); //Better NOT to use to dereferencing
     }
 
     #[test]
     fn f1_acccepts_a_mutable_reference__case_2() {
         let mut x = (0u32, 1u32);
-        assert_eq!(*f1(&mut x, false), 0u32);
+        // assert_eq!(*f1(&mut x, false), 0u32);
+        assert_eq!(f1(&mut x, false), &mut 0); //Better NOT to use to dereferencing
     }
 
     #[test]
     fn f2_returns_first() {
         let mut input = vec![0, 1, 2, 3];
-        assert_eq!(*f2(&mut input, 0), 0u32);
+        assert_eq!(f2(&mut input, 0), &mut 0u32);
     }
     #[test]
     fn f2_returns_second() {
         let mut input = vec![0, 1, 2, 3];
-        assert_eq!(*f2(&mut input, 1), 1u32);
+        assert_eq!(f2(&mut input, 1), &mut 1u32);
     }
 }
