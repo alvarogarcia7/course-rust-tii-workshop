@@ -21,6 +21,16 @@ fn f3(slice: &mut [u32], index_from_end: usize) -> &mut u32 {
     &mut slice[slice.len() - index_from_end - 1]
 }
 
+fn f4(slice: &[u32]) -> (&[u32], &[u32], &[u32], &[u32]) {
+    let len = slice.len();
+    (
+        &slice[0..len / 4],
+        &slice[len / 4..len / 2],
+        &slice[len / 2..3 * len / 4],
+        &slice[3 * len / 4..len]
+    )
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -61,5 +71,35 @@ mod tests {
     fn f3_returns_second_last() {
         let mut input = vec![0, 1, 2, 3];
         assert_eq!(f3(&mut input, 1), &mut 2u32);
+    }
+
+    #[test]
+    fn f4_returns_one_each() {
+        let input = vec![0, 1, 2, 3];
+        let slice1: Vec<u32> = vec![0];
+        assert_eq!(f4(&input), (&*slice1, &*vec![1u32], &*vec![2u32], &*vec![3u32]));
+    }
+
+    #[test]
+    fn f4_returns_two_each() {
+        let input: Vec<u32> = (0..8).collect();
+        let slice1: Vec<u32> = vec![0];
+        assert_eq!(f4(&input), (
+            &*(0..2).collect::<Vec<_>>(),
+            &*(2..4).collect::<Vec<_>>(),
+            &*(4..6).collect::<Vec<_>>(),
+            &*(6..8).collect::<Vec<_>>()
+        ));
+    }
+
+    #[test]
+    fn f4_returns_one_each__another_syntax() {
+        let input = vec![0, 1, 2, 3];
+        let slice1: Vec<u32> = vec![0];
+        let res = f4(&input);
+        assert_eq!(res, (&*slice1, &*vec![1u32], &*vec![2u32], &*vec![3u32]));
+
+        // asserting individually:
+        assert_eq!(res.0, &[0u32]);
     }
 }
