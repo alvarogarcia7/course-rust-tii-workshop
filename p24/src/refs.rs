@@ -17,6 +17,10 @@ fn f2(mut slice: &mut [u32], index: usize) -> &mut u32 {
     &mut slice[index]
 }
 
+fn f3(slice: &mut [u32], index_from_end: usize) -> &mut u32 {
+    &mut slice[slice.len() - index_from_end - 1]
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -40,9 +44,22 @@ mod tests {
         let mut input = vec![0, 1, 2, 3];
         assert_eq!(f2(&mut input, 0), &mut 0u32);
     }
+
     #[test]
     fn f2_returns_second() {
         let mut input = vec![0, 1, 2, 3];
         assert_eq!(f2(&mut input, 1), &mut 1u32);
+    }
+
+    #[test]
+    fn f3_returns_last() {
+        let mut input = vec![0, 1, 2, 3];
+        assert_eq!(f3(&mut input, 0), &mut 3u32);
+    }
+
+    #[test]
+    fn f3_returns_second_last() {
+        let mut input = vec![0, 1, 2, 3];
+        assert_eq!(f3(&mut input, 1), &mut 2u32);
     }
 }
