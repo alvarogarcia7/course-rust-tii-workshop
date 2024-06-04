@@ -22,13 +22,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn f1_accceptes_a_mutable_reference__case_1() {
+    fn f1_acccepts_a_mutable_reference__case_1() {
         let mut x = (0u32, 1u32);
         assert_eq!(*f1(&mut x, true), 1u32);
     }
 
     #[test]
-    fn f1_accceptes_a_mutable_reference__case_2() {
+    fn f1_acccepts_a_mutable_reference__case_2() {
         let mut x = (0u32, 1u32);
         assert_eq!(*f1(&mut x, false), 0u32);
     }
