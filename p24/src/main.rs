@@ -29,12 +29,16 @@ fn increased_by_first_item<'b>(data: &[usize], n: &'b mut usize) -> &'b mut usiz
 struct TwoValues<'a> {
     first: &'a usize,
     second: &'a usize,
-    third: usize,
+    // third: usize,
 }
 
 impl<'a> TwoValues<'a> {
     pub fn new(first: &'a usize, second: &'a usize) -> Self {
-        Self { first, second, third: 0 }
+        Self {
+            first,
+            second,
+            //third: 0
+        }
     }
 
     pub fn get_first(&self) -> &'a usize {
@@ -45,7 +49,7 @@ impl<'a> TwoValues<'a> {
         self.second
     }
 
-    pub fn get_third(&self) -> &usize {
-        &self.third
-    }
+    // pub fn get_third(&self) -> &usize {
+    //     &self.third
+    // }
 }
