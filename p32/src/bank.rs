@@ -55,7 +55,10 @@ pub struct Bank {
 
 impl Bank {
     pub(crate) fn merge(&mut self, another: &mut Bank) -> bool {
-        self.users.append(&mut another.users);
+        // TODO Stuck here - AGB
+        for user in another.users.iter_mut() {
+            self.users.push(user)
+        }
 
         true
     }
