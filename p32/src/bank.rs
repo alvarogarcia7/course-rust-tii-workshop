@@ -115,21 +115,10 @@ impl Bank {
         if amount <= 0 {
             return false;
         }
-        let mut maybe_origin_index = None;
-        let mut maybe_destination_index = None;
         // let users_iter_mut = self.users.iter_mut();
         // let both_users_exist = users_iter_mut.filter(|user| user.name == origin_username || user.name == destination_username).count() == 2;
-        for (index, user) in self.users.iter().enumerate() {
-            if user.name == origin_username {
-                maybe_origin_index = Some(index);
-            }
-            if user.name == destination_username {
-                maybe_destination_index = Some(index);
-            }
-            if maybe_origin_index.is_some() && maybe_destination_index.is_some() {
-                break;
-            }
-        }
+        let maybe_origin_index = self.get_user_index_by_id(origin_username.to_string());
+        let maybe_destination_index = self.get_user_index_by_id(destination_username.to_string());
 
         // let both_users_exist = users_iter_mut.filter(|user| user.name == origin_username || user.name == destination_username).count() == 2;
         // first_user_exists = users_iter_mut(|user| user.name == origin_username).count() == 1;
