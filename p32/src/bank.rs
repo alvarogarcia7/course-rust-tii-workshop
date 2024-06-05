@@ -55,10 +55,17 @@ pub struct Bank {
 
 impl Bank {
     pub(crate) fn merge(&mut self, another: Bank) -> bool {
-        for user in another.users {
-            self.users.push(user)
+        for user_from_new_bank in another.users {
+            let user_name = user_from_new_bank.name.to_string();
+            match self.get_user_index_by_id(user_name) {
+                None => self.users.push(user_from_new_bank),
+                Some(overlapping_user_index) => {
+                    let old_balance = self.users[overlapping_user_index].balance;
+                    let new_balance = old_balance + user_from_new_bank.balance;
+                    self.users[overlapping_user_index].set_balance(new_balance)
+                }
+            }
         }
-
         true
     }
 }
@@ -91,6 +98,13 @@ impl Bank {
     }
     pub(crate) fn get_user_by_id(&self, user_id: String) -> Option<&User> {
         self.users.iter().find(|&user| user.name == user_id)
+    }
+    fn get_user_index_by_id(&self, user_id: String) -> Option<usize> {
+        self.users
+            .iter()
+            .enumerate()
+            .find(|(_, user)| user.name == user_id)
+            .map(|(a, _)| a)
     }
     pub(crate) fn transfer(
         &mut self,
@@ -394,6 +408,46 @@ mod tests_bank {
         assert_eq!(
             bank1.get_user_by_id("user4".to_string()).unwrap().balance,
             4
+        );
+    }
+
+    #[test]
+    fn merge_banks_should_merge_balances_when_users_overlap() {
+        let balance_at_first_bank = 1;
+        let user1 = "user1";
+        let user1_bank1 = User::new(user1.to_string(), 1, balance_at_first_bank);
+        let user2_bank1 = User::new("user2".to_string(), 1, 2);
+        let mut bank1 = Bank::new(
+            vec![user1_bank1, user2_bank1],
+            "First Bank".to_string(),
+            1,
+            4,
+        );
+
+        let balance_at_second_bank = 1;
+        let user1_bank2 = User::new(user1.to_string(), 1, balance_at_second_bank);
+        let user3_bank2 = User::new("user3".to_string(), 1, 3);
+        let bank2 = Bank::new(
+            vec![user1_bank2, user3_bank2],
+            "Second Bank".to_string(),
+            1,
+            4,
+        );
+
+        let result = bank1.merge(bank2);
+
+        assert!(result);
+        assert_eq!(
+            bank1.get_user_by_id(user1.to_string()).unwrap().balance,
+            balance_at_first_bank + balance_at_second_bank
+        );
+        assert_eq!(
+            bank1.get_user_by_id("user2".to_string()).unwrap().balance,
+            2
+        );
+        assert_eq!(
+            bank1.get_user_by_id("user3".to_string()).unwrap().balance,
+            3
         );
     }
 }
