@@ -9,33 +9,51 @@
 
 use std::f64::consts::PI;
 
-pub trait DecimalArea {
-    fn area(&self) -> f64;
-}
-
-pub trait WholeArea {
-    fn area(&self) -> u64;
-}
-
-#[allow(dead_code)]
-pub trait ShapeName {
+pub trait Shape {
     const NAME: &'static str;
-}
 
-#[allow(dead_code)]
-pub trait WholeareaShape: ShapeName + WholeArea {}
+    fn perimeter(&self) -> u64;
+    fn area(&self) -> f64;
+    fn scale(&mut self, ratio: f32);
+    #[allow(dead_code)]
+    fn area_to_perimeter(&self) -> f64;
+    #[allow(dead_code)]
+    fn biggest_area<'a>(&'a self, another: &'a Self) -> &Self {
+        if self.area() > another.area() {
+            self
+        } else {
+            another
+        }
+    }
+    #[allow(dead_code)]
+    fn print_properties(&self);
+}
 
 struct Square {
     sides: u64,
 }
 
-impl ShapeName for Square {
+impl Shape for Square {
     const NAME: &'static str = "Square";
-}
 
-impl WholeArea for Square {
-    fn area(&self) -> u64 {
-        self.sides * self.sides
+    fn perimeter(&self) -> u64 {
+        4 * self.sides
+    }
+
+    fn area(&self) -> f64 {
+        (self.sides * self.sides) as f64
+    }
+
+    fn scale(&mut self, ratio: f32) {
+        self.sides = (self.sides as f32 * ratio) as u64
+    }
+
+    fn area_to_perimeter(&self) -> f64 {
+        self.area() / self.perimeter() as f64
+    }
+
+    fn print_properties(&self) {
+        todo!()
     }
 }
 
@@ -50,13 +68,28 @@ struct Rectangle {
     height: u64,
 }
 
-impl ShapeName for Rectangle {
+impl Shape for Rectangle {
     const NAME: &'static str = "Square";
-}
 
-impl WholeArea for Rectangle {
-    fn area(&self) -> u64 {
-        self.width * self.height
+    fn perimeter(&self) -> u64 {
+        2 * self.height + 2 * self.width
+    }
+
+    fn area(&self) -> f64 {
+        self.width as f64 * self.height as f64
+    }
+
+    fn scale(&mut self, ratio: f32) {
+        self.width = (ratio * self.width as f32) as u64;
+        self.height = (ratio * self.height as f32) as u64;
+    }
+
+    fn area_to_perimeter(&self) -> f64 {
+        (self.area() as u64 / self.perimeter()) as f64
+    }
+
+    fn print_properties(&self) {
+        todo!()
     }
 }
 
@@ -70,16 +103,30 @@ struct Circle {
     radius: u64,
 }
 
-impl ShapeName for Circle {
+impl Shape for Circle {
     const NAME: &'static str = "Circle";
-}
 
-impl DecimalArea for Circle {
+    fn perimeter(&self) -> u64 {
+        todo!()
+    }
+
     fn area(&self) -> f64 {
         self.radius
             .checked_mul(self.radius)
             .map(|x| (x as f64) * (PI))
             .unwrap()
+    }
+
+    fn scale(&mut self, ratio: f32) {
+        self.radius = (self.radius as f32 * ratio) as u64
+    }
+
+    fn area_to_perimeter(&self) -> f64 {
+        todo!()
+    }
+
+    fn print_properties(&self) {
+        todo!()
     }
 }
 
@@ -90,34 +137,88 @@ impl Circle {
 }
 
 #[cfg(test)]
-mod tests {
+mod tests_square {
     use super::*;
-    use std::f64::consts::PI;
 
     #[test]
-    pub fn calculate_area_for_square() {
-        let square = Square::new(8);
+    pub fn area() {
+        let shape = Square::new(8);
 
-        let actual = square.area();
+        let actual = shape.area();
 
-        assert_eq!(actual, 8 * 8)
+        assert_eq!(actual, 8f64 * 8f64)
     }
 
     #[test]
-    pub fn calculate_area_for_rectangle() {
+    pub fn perimeter() {
+        let shape = Square::new(8);
+
+        let actual = shape.perimeter();
+
+        assert_eq!(actual, 4 * 8)
+    }
+
+    #[test]
+    pub fn scale() {
+        let mut shape = Square::new(4);
+
+        shape.scale(5f32);
+
+        assert_eq!(shape.perimeter(), 4 * (4 * 5))
+    }
+}
+
+#[cfg(test)]
+mod tests_rectangle {
+    use super::*;
+
+    #[test]
+    pub fn perimeter() {
+        let shape = Rectangle::new(8, 6);
+
+        let actual = shape.perimeter();
+
+        assert_eq!(actual, 2 * 8 + 2 * 6)
+    }
+
+    #[test]
+    pub fn area() {
         let shape = Rectangle::new(8, 6);
 
         let actual = shape.area();
 
-        assert_eq!(actual, 8 * 6)
+        assert_eq!(actual, 8f64 * 6f64)
     }
 
     #[test]
-    pub fn calculate_area_for_circle() {
+    pub fn scale() {
+        let mut shape = Rectangle::new(4, 8);
+
+        shape.scale(5f32);
+
+        assert_eq!(shape.perimeter(), 5 * (2 * 4 + 2 * 8))
+    }
+}
+
+#[cfg(test)]
+mod tests_circle {
+    use super::*;
+
+    #[test]
+    pub fn area() {
         let shape = Circle::new(3);
 
         let actual = shape.area();
 
         assert_eq!(actual, PI * 3f64 * 3f64);
+    }
+
+    #[test]
+    pub fn scale() {
+        let mut shape = Circle::new(4);
+
+        shape.scale(5f32);
+
+        assert_eq!(shape.area(), PI * (5u64 * 4u64).pow(2) as f64)
     }
 }
