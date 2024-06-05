@@ -54,9 +54,8 @@ pub struct Bank {
 }
 
 impl Bank {
-    pub(crate) fn merge(&mut self, another: &mut Bank) -> bool {
-        // TODO Stuck here - AGB
-        for user in another.users.iter_mut() {
+    pub(crate) fn merge(&mut self, another: Bank) -> bool {
+        for user in another.users {
             self.users.push(user)
         }
 
@@ -370,14 +369,14 @@ mod tests_bank {
 
         let user3_bank2 = User::new("user3".to_string(), 1, 1);
         let user4_bank2 = User::new("user4".to_string(), 1, 1);
-        let mut bank2 = Bank::new(
+        let bank2 = Bank::new(
             vec![user3_bank2, user4_bank2],
             "Second Bank".to_string(),
             1,
             4,
         );
 
-        let result = bank1.merge(&mut bank2);
+        let result = bank1.merge(bank2);
 
         assert!(result);
         assert!(bank1.get_user_by_id("user1".to_string()).is_some());
