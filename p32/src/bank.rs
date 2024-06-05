@@ -49,7 +49,13 @@ pub struct Bank {
     debit_interest: u64,
 }
 
-impl Bank {}
+impl Bank {
+    pub(crate) fn merge(&mut self, another: &mut Bank) -> bool {
+        self.users.append(&mut another.users);
+
+        true
+    }
+}
 
 pub struct BalanceSheet {
     liabilities: u64,
@@ -310,5 +316,25 @@ mod tests_bank {
 
         assert_eq!(result, true);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().credit_line, 101);
+    }
+
+
+    #[test]
+    fn merge_banks_when_no_users_overlap() {
+        let user1_bank1 = User::new("user1".to_string(), 1, 1);
+        let user2_bank1 = User::new("user2".to_string(), 1, 1);
+        let mut bank1 = Bank::new(vec![user1_bank1, user2_bank1], "First Bank".to_string(), 1, 4);
+
+        let user3_bank2 = User::new("user3".to_string(), 1, 1);
+        let user4_bank2 = User::new("user4".to_string(), 1, 1);
+        let mut bank2 = Bank::new(vec![user3_bank2, user4_bank2], "Second Bank".to_string(), 1, 4);
+
+        let result = bank1.merge(&mut bank2);
+
+        assert_eq!(result, true);
+        assert_eq!(bank1.get_user_by_id("user1".to_string()).is_some(), true);
+        assert_eq!(bank1.get_user_by_id("user2".to_string()).is_some(), true);
+        assert_eq!(bank1.get_user_by_id("user3".to_string()).is_some(), true);
+        assert_eq!(bank1.get_user_by_id("user4".to_string()).is_some(), true);
     }
 }
