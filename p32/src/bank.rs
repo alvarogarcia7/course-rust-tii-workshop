@@ -56,7 +56,7 @@ pub struct Bank {
 impl Bank {
     pub(crate) fn merge(&mut self, another: Bank) -> bool {
         for user_from_new_bank in another.users {
-            let user_name = user_from_new_bank.name.to_string();
+            let user_name = &user_from_new_bank.name;
             match self.get_user_index_by_id(user_name) {
                 None => self.users.push(user_from_new_bank),
                 Some(overlapping_user_index) => {
@@ -99,7 +99,7 @@ impl Bank {
     pub(crate) fn get_user_by_id(&self, user_id: String) -> Option<&User> {
         self.users.iter().find(|&user| user.name == user_id)
     }
-    fn get_user_index_by_id(&self, user_id: String) -> Option<usize> {
+    fn get_user_index_by_id(&self, user_id: &str) -> Option<usize> {
         self.users
             .iter()
             .enumerate()
@@ -117,8 +117,8 @@ impl Bank {
         }
         // let users_iter_mut = self.users.iter_mut();
         // let both_users_exist = users_iter_mut.filter(|user| user.name == origin_username || user.name == destination_username).count() == 2;
-        let maybe_origin_index = self.get_user_index_by_id(origin_username.to_string());
-        let maybe_destination_index = self.get_user_index_by_id(destination_username.to_string());
+        let maybe_origin_index = self.get_user_index_by_id(origin_username);
+        let maybe_destination_index = self.get_user_index_by_id(destination_username);
 
         // let both_users_exist = users_iter_mut.filter(|user| user.name == origin_username || user.name == destination_username).count() == 2;
         // first_user_exists = users_iter_mut(|user| user.name == origin_username).count() == 1;
