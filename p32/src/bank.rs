@@ -23,7 +23,11 @@ impl BalanceAccessor for User {
 impl User {
     // type of name?
     pub fn new(name: String, credit_line: u64, balance: i64) -> Self {
-        Self { name, credit_line, balance }
+        Self {
+            name,
+            credit_line,
+            balance,
+        }
     }
 }
 
@@ -66,19 +70,32 @@ impl Balance for Bank {
     fn balance(&self) -> BalanceSheet {
         let total_assets = self.users.iter().map(|user| user.get_balance()).sum();
         let total_liabilities = self.users.iter().map(|user| user.credit_line).sum();
-        BalanceSheet { assets: total_assets, liabilities: total_liabilities }
+        BalanceSheet {
+            assets: total_assets,
+            liabilities: total_liabilities,
+        }
     }
 }
 
 impl Bank {
     // type of users?
     pub fn new(users: Vec<User>, name: String, credit_interest: u64, debit_interest: u64) -> Self {
-        Self { users, name, credit_interest, debit_interest }
+        Self {
+            users,
+            name,
+            credit_interest,
+            debit_interest,
+        }
     }
     pub(crate) fn get_user_by_id(&self, user_id: String) -> Option<&User> {
         self.users.iter().find(|&user| user.name == user_id)
     }
-    pub(crate) fn transfer(&mut self, origin_username: &str, destination_username: &str, amount: i64) -> bool {
+    pub(crate) fn transfer(
+        &mut self,
+        origin_username: &str,
+        destination_username: &str,
+        amount: i64,
+    ) -> bool {
         if amount <= 0 {
             return false;
         }
@@ -98,7 +115,6 @@ impl Bank {
             }
         }
 
-
         // let both_users_exist = users_iter_mut.filter(|user| user.name == origin_username || user.name == destination_username).count() == 2;
         // first_user_exists = users_iter_mut(|user| user.name == origin_username).count() == 1;
         // let users_iter_mut = self.users.iter_mut();
@@ -108,17 +124,21 @@ impl Bank {
         // first_user.set_balance(first_user.get_balance() - amount);
         // self.users[second_user_exists_index as usize].set_balance(self.users[second_user_exists_index as usize].get_balance() + amount);
 
-        let (origin_index, destination_index) = match (maybe_origin_index, maybe_destination_index) {
-            (Some(origin_index), Some(destination_index)) => { (origin_index, destination_index) }
-            (None, _) => { return false; }
-            (_, None) => { return false; }
+        let (origin_index, destination_index) = match (maybe_origin_index, maybe_destination_index)
+        {
+            (Some(origin_index), Some(destination_index)) => (origin_index, destination_index),
+            (None, _) => {
+                return false;
+            }
+            (_, None) => {
+                return false;
+            }
         };
 
         let has_credit_limit = self.users[origin_index].max_credit() >= amount as u64;
         if !has_credit_limit {
             return false;
         }
-
 
         {
             let origin_balance = self.users[origin_index].get_balance() - amount;
@@ -184,7 +204,6 @@ mod tests_bank {
         let user1 = User::new("John".to_string(), 1, 1);
         let bank = Bank::new(vec![user1], "First Bank".to_string(), 1, 4);
 
-
         assert_eq!(bank.users.len(), 1);
         assert_eq!(bank.name, "First Bank".to_string());
         assert_eq!(bank.credit_interest, 1);
@@ -225,8 +244,14 @@ mod tests_bank {
         let result = bank.transfer("user1", "user2", 2);
 
         assert!(result);
-        assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, -1);
-        assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 92);
+        assert_eq!(
+            bank.get_user_by_id("user1".to_string()).unwrap().balance,
+            -1
+        );
+        assert_eq!(
+            bank.get_user_by_id("user2".to_string()).unwrap().balance,
+            92
+        );
     }
 
     #[test]
@@ -239,7 +264,10 @@ mod tests_bank {
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
-        assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 90);
+        assert_eq!(
+            bank.get_user_by_id("user2".to_string()).unwrap().balance,
+            90
+        );
     }
 
     #[test]
@@ -274,9 +302,11 @@ mod tests_bank {
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
-        assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 90);
+        assert_eq!(
+            bank.get_user_by_id("user2".to_string()).unwrap().balance,
+            90
+        );
     }
-
 
     #[test]
     fn transfer_funds_amount_cannot_be_zero() {
@@ -288,7 +318,10 @@ mod tests_bank {
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
-        assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 90);
+        assert_eq!(
+            bank.get_user_by_id("user2".to_string()).unwrap().balance,
+            90
+        );
     }
 
     #[test]
@@ -299,7 +332,10 @@ mod tests_bank {
         let result = bank.accrue_interest();
 
         assert!(result);
-        assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 104);
+        assert_eq!(
+            bank.get_user_by_id("user1".to_string()).unwrap().balance,
+            104
+        );
     }
 
     #[test]
@@ -310,19 +346,33 @@ mod tests_bank {
         let result = bank.accrue_interest();
 
         assert!(result);
-        assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().credit_line, 101);
+        assert_eq!(
+            bank.get_user_by_id("user1".to_string())
+                .unwrap()
+                .credit_line,
+            101
+        );
     }
-
 
     #[test]
     fn merge_banks_when_no_users_overlap() {
         let user1_bank1 = User::new("user1".to_string(), 1, 1);
         let user2_bank1 = User::new("user2".to_string(), 1, 1);
-        let mut bank1 = Bank::new(vec![user1_bank1, user2_bank1], "First Bank".to_string(), 1, 4);
+        let mut bank1 = Bank::new(
+            vec![user1_bank1, user2_bank1],
+            "First Bank".to_string(),
+            1,
+            4,
+        );
 
         let user3_bank2 = User::new("user3".to_string(), 1, 1);
         let user4_bank2 = User::new("user4".to_string(), 1, 1);
-        let mut bank2 = Bank::new(vec![user3_bank2, user4_bank2], "Second Bank".to_string(), 1, 4);
+        let mut bank2 = Bank::new(
+            vec![user3_bank2, user4_bank2],
+            "Second Bank".to_string(),
+            1,
+            4,
+        );
 
         let result = bank1.merge(&mut bank2);
 
