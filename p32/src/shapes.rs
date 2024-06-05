@@ -30,6 +30,25 @@ impl Square {
     }
 }
 
+struct Rectangle {
+    width: u64,
+    height: u64,
+}
+
+impl Shape for Rectangle {
+    const NAME: &'static str = "Square";
+
+    fn perimeter(&self) -> u64 {
+        self.width * self.height
+    }
+}
+
+impl Rectangle {
+    pub fn new(width: u64, height: u64) -> Self {
+        Self { width, height }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -41,5 +60,14 @@ mod tests {
         let actual = square.perimeter();
 
         assert_eq!(actual, 8 * 8)
+    }
+
+    #[test]
+    pub fn calculate_perimeter_for_rectangle() {
+        let shape = Rectangle::new(8, 6);
+
+        let actual = shape.perimeter();
+
+        assert_eq!(actual, 8 * 6)
     }
 }
