@@ -359,7 +359,7 @@ mod tests_bank {
     #[test]
     fn merge_banks_when_no_users_overlap() {
         let user1_bank1 = User::new("user1".to_string(), 1, 1);
-        let user2_bank1 = User::new("user2".to_string(), 1, 1);
+        let user2_bank1 = User::new("user2".to_string(), 1, 2);
         let mut bank1 = Bank::new(
             vec![user1_bank1, user2_bank1],
             "First Bank".to_string(),
@@ -367,8 +367,8 @@ mod tests_bank {
             4,
         );
 
-        let user3_bank2 = User::new("user3".to_string(), 1, 1);
-        let user4_bank2 = User::new("user4".to_string(), 1, 1);
+        let user3_bank2 = User::new("user3".to_string(), 1, 3);
+        let user4_bank2 = User::new("user4".to_string(), 1, 4);
         let bank2 = Bank::new(
             vec![user3_bank2, user4_bank2],
             "Second Bank".to_string(),
@@ -379,9 +379,21 @@ mod tests_bank {
         let result = bank1.merge(bank2);
 
         assert!(result);
-        assert!(bank1.get_user_by_id("user1".to_string()).is_some());
-        assert!(bank1.get_user_by_id("user2".to_string()).is_some());
-        assert!(bank1.get_user_by_id("user3".to_string()).is_some());
-        assert!(bank1.get_user_by_id("user4".to_string()).is_some());
+        assert_eq!(
+            bank1.get_user_by_id("user1".to_string()).unwrap().balance,
+            1
+        );
+        assert_eq!(
+            bank1.get_user_by_id("user2".to_string()).unwrap().balance,
+            2
+        );
+        assert_eq!(
+            bank1.get_user_by_id("user3".to_string()).unwrap().balance,
+            3
+        );
+        assert_eq!(
+            bank1.get_user_by_id("user4".to_string()).unwrap().balance,
+            4
+        );
     }
 }
