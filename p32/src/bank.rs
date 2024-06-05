@@ -66,7 +66,7 @@ impl Balance for Bank {
     fn balance(&self) -> BalanceSheet {
         let total_assets = self.users.iter().map(|user| user.get_balance()).sum();
         let total_liabilities = self.users.iter().map(|user| user.credit_line).sum();
-        return BalanceSheet { assets: total_assets, liabilities: total_liabilities };
+        BalanceSheet { assets: total_assets, liabilities: total_liabilities }
     }
 }
 
@@ -76,12 +76,7 @@ impl Bank {
         Self { users, name, credit_interest, debit_interest }
     }
     pub(crate) fn get_user_by_id(&self, user_id: String) -> Option<&User> {
-        for user in self.users.iter() {
-            if user.name == user_id {
-                return Some(&user);
-            }
-        }
-        return None;
+        self.users.iter().find(|&user| user.name == user_id)
     }
     pub(crate) fn transfer(&mut self, origin_username: &str, destination_username: &str, amount: i64) -> bool {
         if amount <= 0 {
@@ -229,7 +224,7 @@ mod tests_bank {
 
         let result = bank.transfer("user1", "user2", 2);
 
-        assert_eq!(result, true);
+        assert!(result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, -1);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 92);
     }
@@ -242,7 +237,7 @@ mod tests_bank {
 
         let result = bank.transfer("user1", "user2", 2);
 
-        assert_eq!(result, false);
+        assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 90);
     }
@@ -254,7 +249,7 @@ mod tests_bank {
 
         let result = bank.transfer("NON_EXISTING", "user2", 2);
 
-        assert_eq!(result, false);
+        assert!(!result);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 1);
     }
 
@@ -265,7 +260,7 @@ mod tests_bank {
 
         let result = bank.transfer("user2", "NON_EXISTING", 2);
 
-        assert_eq!(result, false);
+        assert!(!result);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 1);
     }
 
@@ -277,7 +272,7 @@ mod tests_bank {
 
         let result = bank.transfer("user1", "user2", -2);
 
-        assert_eq!(result, false);
+        assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 90);
     }
@@ -291,7 +286,7 @@ mod tests_bank {
 
         let result = bank.transfer("user1", "user2", 0);
 
-        assert_eq!(result, false);
+        assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 90);
     }
@@ -303,7 +298,7 @@ mod tests_bank {
 
         let result = bank.accrue_interest();
 
-        assert_eq!(result, true);
+        assert!(result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 104);
     }
 
@@ -314,7 +309,7 @@ mod tests_bank {
 
         let result = bank.accrue_interest();
 
-        assert_eq!(result, true);
+        assert!(result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().credit_line, 101);
     }
 
@@ -331,10 +326,10 @@ mod tests_bank {
 
         let result = bank1.merge(&mut bank2);
 
-        assert_eq!(result, true);
-        assert_eq!(bank1.get_user_by_id("user1".to_string()).is_some(), true);
-        assert_eq!(bank1.get_user_by_id("user2".to_string()).is_some(), true);
-        assert_eq!(bank1.get_user_by_id("user3".to_string()).is_some(), true);
-        assert_eq!(bank1.get_user_by_id("user4".to_string()).is_some(), true);
+        assert!(result);
+        assert!(bank1.get_user_by_id("user1".to_string()).is_some());
+        assert!(bank1.get_user_by_id("user2".to_string()).is_some());
+        assert!(bank1.get_user_by_id("user3".to_string()).is_some());
+        assert!(bank1.get_user_by_id("user4".to_string()).is_some());
     }
 }
