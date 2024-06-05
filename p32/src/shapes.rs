@@ -9,12 +9,12 @@
 
 use std::f64::consts::PI;
 
-pub trait DecimalPerimeter {
-    fn perimeter(&self) -> f64;
+pub trait DecimalArea {
+    fn area(&self) -> f64;
 }
 
-pub trait WholePerimeter {
-    fn perimeter(&self) -> u64;
+pub trait WholeArea {
+    fn area(&self) -> u64;
 }
 
 #[allow(dead_code)]
@@ -23,7 +23,7 @@ pub trait ShapeName {
 }
 
 #[allow(dead_code)]
-pub trait WholePerimeterShape: ShapeName + WholePerimeter {}
+pub trait WholeareaShape: ShapeName + WholeArea {}
 
 struct Square {
     sides: u64,
@@ -33,8 +33,8 @@ impl ShapeName for Square {
     const NAME: &'static str = "Square";
 }
 
-impl WholePerimeter for Square {
-    fn perimeter(&self) -> u64 {
+impl WholeArea for Square {
+    fn area(&self) -> u64 {
         self.sides * self.sides
     }
 }
@@ -54,8 +54,8 @@ impl ShapeName for Rectangle {
     const NAME: &'static str = "Square";
 }
 
-impl WholePerimeter for Rectangle {
-    fn perimeter(&self) -> u64 {
+impl WholeArea for Rectangle {
+    fn area(&self) -> u64 {
         self.width * self.height
     }
 }
@@ -74,8 +74,8 @@ impl ShapeName for Circle {
     const NAME: &'static str = "Circle";
 }
 
-impl DecimalPerimeter for Circle {
-    fn perimeter(&self) -> f64 {
+impl DecimalArea for Circle {
+    fn area(&self) -> f64 {
         self.radius
             .checked_mul(self.radius)
             .map(|x| (x as f64) * (PI))
@@ -95,28 +95,28 @@ mod tests {
     use std::f64::consts::PI;
 
     #[test]
-    pub fn calculate_perimeter_for_square() {
+    pub fn calculate_area_for_square() {
         let square = Square::new(8);
 
-        let actual = square.perimeter();
+        let actual = square.area();
 
         assert_eq!(actual, 8 * 8)
     }
 
     #[test]
-    pub fn calculate_perimeter_for_rectangle() {
+    pub fn calculate_area_for_rectangle() {
         let shape = Rectangle::new(8, 6);
 
-        let actual = shape.perimeter();
+        let actual = shape.area();
 
         assert_eq!(actual, 8 * 6)
     }
 
     #[test]
-    pub fn calculate_perimeter_for_circle() {
+    pub fn calculate_area_for_circle() {
         let shape = Circle::new(3);
 
-        let actual = shape.perimeter();
+        let actual = shape.area();
 
         assert_eq!(actual, PI * 3f64 * 3f64);
     }
