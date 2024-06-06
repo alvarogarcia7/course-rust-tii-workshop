@@ -149,8 +149,7 @@ impl Iterator for SongIter {
 mod tests {
     use super::*;
 
-    #[allow(dead_code)]
-    // #[test]
+    #[test]
     fn full_text() {
         let strs = vec![
             vec![
