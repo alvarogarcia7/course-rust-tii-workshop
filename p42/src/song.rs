@@ -54,7 +54,7 @@ impl SongIter {
         }
         let selected_days = 1..day + 1;
 
-        let initial: String = if day > 1 {
+        let initial: String =
             // https://doc.rust-lang.org/beta/alloc/string/struct.String.html#method.with_capacity
             // s.push(char)
             // s.push(&String)
@@ -65,10 +65,7 @@ impl SongIter {
                     .map(|day| SONG_PARTS[day].to_string())
                     .collect::<Vec<String>>()
                     .join(", ")
-            )
-        } else {
-            format!("{},", SONG_PARTS[day])
-        };
+            );
         let mut final_part = SONG_PARTS[0].to_string();
         self.make_first_lowercase(&mut final_part);
         format!("{} And {}", initial, final_part)
