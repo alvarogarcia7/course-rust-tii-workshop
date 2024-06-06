@@ -136,7 +136,7 @@ impl Iterator for SongIter {
     fn next(&mut self) -> Option<Self::Item> {
         if self.current < (self.storage.len()) {
             let hardcoded_value = self.storage[self.current].to_string();
-            let computed = if (0..12).contains(&self.current) {
+            let computed = if true {
                 self.compute(self.current)
             } else {
                 self.compute_intermediate(self.current)
