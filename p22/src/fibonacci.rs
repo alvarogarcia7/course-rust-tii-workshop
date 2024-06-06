@@ -152,22 +152,20 @@ mod benchmarks {
     use super::*;
 
     #[bench]
-    fn recursive(b: &mut Bencher) {
+    fn non_recursive(b: &mut Bencher) {
         b.iter(|| {
             for i in 1..=30 {
-                fibonacci_recursive(i);
+                fibonacci_non_recursive(std::hint::black_box(i));
             }
-            std::hint::black_box(());
         });
     }
 
     #[bench]
-    fn non_recursive(b: &mut Bencher) {
+    fn recursive(b: &mut Bencher) {
         b.iter(|| {
             for i in 1..=30 {
-                fibonacci_non_recursive(i);
+                fibonacci_recursive(std::hint::black_box(i));
             }
-            std::hint::black_box(());
         });
     }
 }
