@@ -81,7 +81,8 @@ impl SongIter {
     }
 
     pub fn compute(&self, day: usize) -> String {
-        format!("{} {}.", self.nth_day(day), self.rest(day))
+        let terminator = if day == 11 { "!" } else { "." };
+        format!("{} {}{}", self.nth_day(day), self.rest(day), terminator)
     }
     pub fn compute_intermediate(&self, day: usize) -> String {
         format!("{} {}", self.nth_day(day), self.computed_storage[day])
@@ -104,15 +105,18 @@ impl SongIter {
         if day == 0 {
             return self.parts[day].to_string();
         }
-        let selected_days = 1..day;
+        let selected_days = 1..day + 1;
         // let mut selected_days_string = Vec::with_capacity(10);
 
         let initial: String = if day > 1 {
-            selected_days
-                .rev()
-                .map(|day| self.parts[day].to_string())
-                .collect::<Vec<String>>()
-                .join(", ")
+            format!(
+                "{},",
+                selected_days
+                    .rev()
+                    .map(|day| self.parts[day].to_string())
+                    .collect::<Vec<String>>()
+                    .join(", ")
+            )
         } else {
             format!("{},", self.parts[day])
         };
@@ -132,7 +136,7 @@ impl Iterator for SongIter {
     fn next(&mut self) -> Option<Self::Item> {
         if self.current < (self.storage.len()) {
             let hardcoded_value = self.storage[self.current].to_string();
-            let computed = if [0usize, 1].contains(&self.current) {
+            let computed = if (0..12).contains(&self.current) {
                 self.compute(self.current)
             } else {
                 self.compute_intermediate(self.current)
@@ -289,9 +293,10 @@ mod tests {
     }
 
     #[test]
-    fn second() {
+    fn third() {
         let mut iter = SongIter::new();
-        // skip first
+        // skip
+        let _ = iter.next();
         let _ = iter.next();
         let x = iter.next();
         println!("{x:?}")
