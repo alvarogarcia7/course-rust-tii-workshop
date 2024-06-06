@@ -1,4 +1,5 @@
 /// Convert Celsius degrees to Fahrenheit degrees
+// Example for good documentation: https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#944
 pub fn celsius2fahrenheit(celsius: i32) -> i32 {
     // Careful with https://rust-lang.github.io/rust-clippy/master/index.html#/identity_op
     ((celsius * 9) / 5) + 32
