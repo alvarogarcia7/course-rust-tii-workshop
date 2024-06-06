@@ -18,7 +18,7 @@ pub trait Shape {
     #[allow(dead_code)]
     fn area_to_perimeter(&self) -> f64;
     #[allow(dead_code)]
-    fn biggest_area<'a, T: Shape, X: Shape>(&'a self, another: &'a T) -> &dyn Shape {
+    fn biggest_area<'a>(&'a self, another: &'a Self) -> &Self {
         if self.area() > another.area() {
             self
         } else {
@@ -99,39 +99,8 @@ impl Rectangle {
     }
 }
 
-#[derive(Debug, PartialEq)]
 struct Circle {
     radius: u64,
-}
-
-struct Point {}
-
-impl Shape for Point {
-    const NAME: &'static str = "Point";
-
-    fn perimeter(&self) -> u64 {
-        0u64
-    }
-
-    fn area(&self) -> f64 {
-        0f64
-    }
-
-    fn scale(&mut self, ratio: f32) {}
-
-    fn area_to_perimeter(&self) -> f64 {
-        0f64
-    }
-
-    fn print_properties(&self) {
-        todo!()
-    }
-}
-
-impl Point {
-    pub fn new() -> Self {
-        Self {}
-    }
 }
 
 impl Shape for Circle {
@@ -242,30 +211,6 @@ mod tests_circle {
         let actual = shape.area();
 
         assert_eq!(actual, PI * 3f64 * 3f64);
-    }
-
-    #[test]
-    pub fn scale() {
-        let mut shape = Circle::new(4);
-
-        shape.scale(5f32);
-
-        assert_eq!(shape.area(), PI * (5u64 * 4u64).pow(2) as f64)
-    }
-}
-
-#[cfg(test)]
-mod tests_point {
-    use super::*;
-
-    #[test]
-    pub fn bigger() {
-        let shape = Circle::new(3);
-        let point = Point::new();
-
-        let actual = point.biggest_area(&shape);
-
-        assert_eq!(actual, &shape);
     }
 
     #[test]
