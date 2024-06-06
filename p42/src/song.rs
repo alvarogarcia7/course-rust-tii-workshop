@@ -85,6 +85,17 @@ impl Iterator for SongIter {
     }
 }
 
+fn prefix_with_line_number(
+    mut line_num: i32,
+    iter: impl Iterator<Item = String>,
+) -> impl Iterator<Item = String> {
+    iter.map(move |line| {
+        let return_value = format!("{:0>2}: {}", line_num, line);
+        line_num += 1;
+        return_value
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -245,16 +256,5 @@ mod tests {
                 "01:", "02:", "03:", "04:", "05:", "06:", "07:", "08:", "09:", "10:", "11:", "12:",
             ]
         );
-    }
-
-    fn prefix_with_line_number(
-        mut line_num: i32,
-        iter: impl Iterator<Item = String>,
-    ) -> impl Iterator<Item = String> {
-        iter.map(move |line| {
-            let return_value = format!("{:0>2}: {}", line_num, line);
-            line_num += 1;
-            return_value
-        })
     }
 }
