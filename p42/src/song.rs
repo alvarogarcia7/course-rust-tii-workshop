@@ -100,8 +100,7 @@ impl Iterator for SongIter {
 mod tests {
     use super::*;
 
-    #[test]
-    fn full_text() {
+    fn base_data() -> Vec<String> {
         let strs = vec![
             vec![
                 "On the first day of Christmas,",
@@ -233,9 +232,15 @@ mod tests {
         assert_eq!(strs.len(), 12);
         let strsx: Vec<String> = strs.iter().map(|x| x.join(" ")).collect();
         assert_eq!(strsx.len(), 12);
-        println!("{strsx:?}");
+        strsx
+    }
+
+    #[test]
+    fn full_text_without_decoration() {
+        let expected = base_data();
 
         let strsx_actual: Vec<String> = SongIter::new().collect();
-        assert_eq!(strsx_actual, strsx);
+
+        assert_eq!(strsx_actual, expected);
     }
 }
