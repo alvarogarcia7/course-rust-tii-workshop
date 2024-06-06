@@ -1,11 +1,11 @@
 /// Convert Celsius degrees to Fahrenheit degrees
-fn celsius2fahrenheit(celsius: i32) -> i32 {
+pub fn celsius2fahrenheit(celsius: i32) -> i32 {
     // Careful with https://rust-lang.github.io/rust-clippy/master/index.html#/identity_op
     ((celsius * 9) / 5) + 32
 }
 
 /// Convert Fahrenheit degrees to Celsius degrees
-fn fahrenheit2celsius(fahrenheit: i32) -> i32 {
+pub fn fahrenheit2celsius(fahrenheit: i32) -> i32 {
     // Careful with https://rust-lang.github.io/rust-clippy/master/index.html#/identity_op
     (5 * (fahrenheit - 32)) / 9
 }
