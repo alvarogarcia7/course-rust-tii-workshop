@@ -14,6 +14,8 @@ pub fn fibonacci_recursive(n: u32) -> u64 {
     }
 }
 
+const PRECOMPUTED_VALUES: [u64; 3] = [0, 1, 1];
+
 /// Fibonacci series - Non Recursive implementation
 /// # Examples
 /// ```
@@ -24,15 +26,15 @@ pub fn fibonacci_recursive(n: u32) -> u64 {
 /// ```
 pub fn fibonacci_non_recursive(n: u32) -> u64 {
     match n {
-        0 => return 0,
-        1 => return 1,
-        2 => return 1,
+        0 => return PRECOMPUTED_VALUES[n as usize],
+        1 => return PRECOMPUTED_VALUES[n as usize],
+        2 => return PRECOMPUTED_VALUES[n as usize],
         _ => None::<String>,
     };
     assert!(n >= 2);
-    let mut past_2 = fibonacci_non_recursive(0);
-    let mut past = fibonacci_non_recursive(1);
-    let mut number = fibonacci_non_recursive(2);
+    let mut past_2 = PRECOMPUTED_VALUES[0];
+    let mut past = PRECOMPUTED_VALUES[1];
+    let mut number = PRECOMPUTED_VALUES[2];
     // Range inclusive syntax ..= - source: https://bencher.dev/learn/benchmarking/rust/libtest-bench/
     for _ in 2u64..=n as u64 {
         number = past + past_2;
