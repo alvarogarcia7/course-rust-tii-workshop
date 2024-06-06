@@ -1,8 +1,8 @@
-fn fibonacci(n: u32) -> u64 {
+fn fibonacci_recursive(n: u32) -> u64 {
     match n {
         0 => 0,
         1 => 1,
-        _ => fibonacci(n - 1) + fibonacci(n - 2),
+        _ => fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2),
     }
 }
 
@@ -53,23 +53,22 @@ static FIBONACCI_NUMBERS: [u64; 41] = [
 ];
 
 #[cfg(test)]
-mod tests {
+mod tests_recursive {
     use super::*;
-
     #[test]
     fn base_0() {
-        assert_eq!(0, fibonacci(0))
+        assert_eq!(0, fibonacci_recursive(0))
     }
 
     #[test]
     fn base_1() {
-        assert_eq!(1, fibonacci(1))
+        assert_eq!(1, fibonacci_recursive(1))
     }
 
     #[test]
     fn kat() {
         for (index, &expected_fibonacci_number) in FIBONACCI_NUMBERS[0..10].iter().enumerate() {
-            let actual_fibonacci_number = fibonacci(index as u32);
+            let actual_fibonacci_number = fibonacci_recursive(index as u32);
             assert_eq!(
                 expected_fibonacci_number, actual_fibonacci_number,
                 "error: fibonacci({}) is not {}. actual: {}",
