@@ -98,6 +98,7 @@ fn prefix_with_line_number(
 
 #[cfg(test)]
 mod tests {
+    use std::collections::btree_set::Iter;
     use super::*;
 
     fn base_data() -> Vec<String> {
@@ -256,5 +257,25 @@ mod tests {
                 "01:", "02:", "03:", "04:", "05:", "06:", "07:", "08:", "09:", "10:", "11:", "12:",
             ]
         );
+    }
+    #[test]
+    fn echo_should_repeat_the_iter() {
+        let x = vec![1,2,3].iter();
+        let prefixes_from_actual: dyn Iterator<Item=String> = EchoChamber(2, x);
+            .map(|line| line.get(0..3).unwrap().to_string())
+            .collect::<Vec<String>>();
+
+        assert_eq!(
+            prefixes_from_actual,
+            vec![
+                "01:", "02:", "03:", "04:", "05:", "06:", "07:", "08:", "09:", "10:", "11:", "12:",
+            ]
+        );
+    }
+
+    fn EchoChamber(number_of_times: i32, p1: Iter<i32>) -> Iter<i32> {
+        for _ in 0..number_of_times {
+            return p1
+        }
     }
 }
