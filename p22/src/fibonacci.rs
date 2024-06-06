@@ -1,5 +1,5 @@
-fn fibonacci(_p0: u32) -> u64 {
-    0
+fn fibonacci(n: u32) -> u64 {
+    n as u64
 }
 
 #[cfg(test)]
@@ -9,5 +9,10 @@ mod tests {
     #[test]
     fn base_0() {
         assert_eq!(0, fibonacci(0))
+    }
+
+    #[test]
+    fn base_1() {
+        assert_eq!(1, fibonacci(1))
     }
 }
