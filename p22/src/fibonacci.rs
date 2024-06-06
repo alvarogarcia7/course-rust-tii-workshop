@@ -94,55 +94,56 @@ static FIBONACCI_NUMBERS: [u64; 41] = [
 ];
 
 #[cfg(test)]
-mod tests_recursive {
-    use super::*;
+mod tests {
+    mod recursive {
+        use super::super::*;
 
-    #[test]
-    fn base_0() {
-        assert_eq!(0, fibonacci_recursive(0))
-    }
+        #[test]
+        fn base_0() {
+            assert_eq!(0, fibonacci_recursive(0))
+        }
 
-    #[test]
-    fn base_1() {
-        assert_eq!(1, fibonacci_recursive(1))
-    }
+        #[test]
+        fn base_1() {
+            assert_eq!(1, fibonacci_recursive(1))
+        }
 
-    #[test]
-    fn kat() {
-        for (index, &expected_fibonacci_number) in FIBONACCI_NUMBERS[0..10].iter().enumerate() {
-            let actual_fibonacci_number = fibonacci_recursive(index as u32);
-            assert_eq!(
-                expected_fibonacci_number, actual_fibonacci_number,
-                "error: fibonacci({}) is not {}. actual: {}",
-                index, expected_fibonacci_number, actual_fibonacci_number
-            );
+        #[test]
+        fn kat() {
+            for (index, &expected_fibonacci_number) in FIBONACCI_NUMBERS[0..10].iter().enumerate() {
+                let actual_fibonacci_number = fibonacci_recursive(index as u32);
+                assert_eq!(
+                    expected_fibonacci_number, actual_fibonacci_number,
+                    "error: fibonacci({}) is not {}. actual: {}",
+                    index, expected_fibonacci_number, actual_fibonacci_number
+                );
+            }
         }
     }
-}
 
-#[cfg(test)]
-mod tests_non_recursive {
-    use super::*;
+    mod non_recursive {
+        use super::super::*;
 
-    #[test]
-    fn base_0() {
-        assert_eq!(0, fibonacci_non_recursive(0))
-    }
+        #[test]
+        fn base_0() {
+            assert_eq!(0, fibonacci_non_recursive(0))
+        }
 
-    #[test]
-    fn base_1() {
-        assert_eq!(1, fibonacci_non_recursive(1))
-    }
+        #[test]
+        fn base_1() {
+            assert_eq!(1, fibonacci_non_recursive(1))
+        }
 
-    #[test]
-    fn kat() {
-        for (index, &expected_fibonacci_number) in FIBONACCI_NUMBERS.iter().enumerate() {
-            let actual_fibonacci_number = fibonacci_non_recursive(index as u32);
-            assert_eq!(
-                expected_fibonacci_number, actual_fibonacci_number,
-                "error: fibonacci({}) is not {}. actual: {}",
-                index, expected_fibonacci_number, actual_fibonacci_number
-            );
+        #[test]
+        fn kat() {
+            for (index, &expected_fibonacci_number) in FIBONACCI_NUMBERS.iter().enumerate() {
+                let actual_fibonacci_number = fibonacci_non_recursive(index as u32);
+                assert_eq!(
+                    expected_fibonacci_number, actual_fibonacci_number,
+                    "error: fibonacci({}) is not {}. actual: {}",
+                    index, expected_fibonacci_number, actual_fibonacci_number
+                );
+            }
         }
     }
 }
