@@ -1,6 +1,5 @@
 struct SongIter {
     current: usize,
-    storage: Vec<String>,
     parts: Vec<String>,
 }
 
@@ -8,21 +7,6 @@ impl SongIter {
     fn new() -> Self {
         Self {
             current: 0,
-            storage:
-            vec![
-                "On the first day of Christmas, my true love sent to me A partridge in a pear tree.".to_string(),
-                "On the second day of Christmas, my true love sent to me Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the third day of Christmas, my true love sent to me Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the fourth day of Christmas, my true love sent to me Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the fifth day of Christmas, my true love sent to me Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the sixth day of Christmas, my true love sent to me Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the seventh day of Christmas, my true love sent to me Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the eighth day of Christmas, my true love sent to me Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the ninth day of Christmas, my true love sent to me Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the tenth day of Christmas, my true love sent to me Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the eleventh day of Christmas, my true love sent to me Eleven pipers piping, Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "On the twelfth day of Christmas, my true love sent to me Twelve drummers drumming, Eleven pipers piping, Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree!".to_string(),
-            ],
             parts: vec![
                 "A partridge in a pear tree".to_string(),
                 "Two turtle doves".to_string(),
@@ -115,12 +99,10 @@ impl Iterator for SongIter {
     type Item = String;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.current < (self.storage.len()) {
-            let hardcoded_value = self.storage[self.current].to_string();
-            let computed = self.compute(self.current);
-            assert_eq!(computed, hardcoded_value);
+        if self.current < self.parts.len() {
+            let return_value = self.compute(self.current);
             self.current += 1;
-            return Some(hardcoded_value);
+            return Some(return_value);
         }
         None
     }
@@ -268,5 +250,4 @@ mod tests {
         let strsx_actual: Vec<String> = SongIter::new().collect();
         assert_eq!(strsx_actual, strsx);
     }
-
 }
