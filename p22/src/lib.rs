@@ -2,6 +2,7 @@
 extern crate test;
 
 pub mod fibonacci;
+pub mod song;
 
 /// Convert Celsius degrees to Fahrenheit degrees
 // Example for good documentation: https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#944
