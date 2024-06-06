@@ -1,29 +1,30 @@
+static PARTS_STATIC: [&str; 12] = [
+    "A partridge in a pear tree",
+    "Two turtle doves",
+    "Three French hens",
+    "Four calling birds",
+    "Five gold rings",
+    "Six geese a-laying",
+    "Seven swans a-swimming",
+    "Eight maids a-milking",
+    "Nine ladies dancing",
+    "Ten lords a-leaping",
+    "Eleven pipers piping",
+    "Twelve drummers drumming",
+];
+
 struct SongIter {
     current: usize,
-    parts: Vec<String>,
 }
 
 impl SongIter {
     fn new() -> Self {
         Self {
             current: 0,
-            parts: vec![
-                "A partridge in a pear tree".to_string(),
-                "Two turtle doves".to_string(),
-                "Three French hens".to_string(),
-                "Four calling birds".to_string(),
-                "Five gold rings".to_string(),
-                "Six geese a-laying".to_string(),
-                "Seven swans a-swimming".to_string(),
-                "Eight maids a-milking".to_string(),
-                "Nine ladies dancing".to_string(),
-                "Ten lords a-leaping".to_string(),
-                "Eleven pipers piping".to_string(),
-                "Twelve drummers drumming".to_string(),
-            ],
         }
     }
 
+    // TODO AGB repeat here.
     fn nth_day(&self, day: usize) -> String {
         let ordinal = match day + 1 {
             1 => "first".to_string(),
@@ -45,7 +46,7 @@ impl SongIter {
             "On the {} day of Christmas, my true love sent to me",
             ordinal
         )
-        .to_string()
+            .to_string()
     }
 
     pub fn compute(&self, day: usize) -> String {
@@ -61,7 +62,7 @@ impl SongIter {
     }
     fn rest(&self, day: usize) -> String {
         if day == 0 {
-            return self.parts[day].to_string();
+            return PARTS_STATIC[day].to_string();
         }
         let selected_days = 1..day + 1;
 
@@ -70,14 +71,14 @@ impl SongIter {
                 "{},",
                 selected_days
                     .rev()
-                    .map(|day| self.parts[day].to_string())
+                    .map(|day| PARTS_STATIC[day].to_string())
                     .collect::<Vec<String>>()
                     .join(", ")
             )
         } else {
-            format!("{},", self.parts[day])
+            format!("{},", PARTS_STATIC[day])
         };
-        let mut final_part = self.parts[0].to_string();
+        let mut final_part = PARTS_STATIC[0].to_string();
         self.make_first_lowercase(&mut final_part);
         format!("{} And {}", initial, final_part)
     }
@@ -87,7 +88,7 @@ impl Iterator for SongIter {
     type Item = String;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.current < self.parts.len() {
+        if self.current < PARTS_STATIC.len() {
             let return_value = self.compute(self.current);
             self.current += 1;
             return Some(return_value);
@@ -278,8 +279,8 @@ mod tests {
 
     fn prefix_with_line_number(
         mut line_num: i32,
-        iter: impl Iterator<Item = String>,
-    ) -> impl Iterator<Item = String> {
+        iter: impl Iterator<Item=String>,
+    ) -> impl Iterator<Item=String> {
         iter.map(move |line| {
             let return_value = format!("{:0>2}: {}", line_num, line);
             line_num += 1;
