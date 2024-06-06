@@ -1,7 +1,6 @@
 struct SongIter {
     current: usize,
     storage: Vec<String>,
-    computed_storage: Vec<String>,
     parts: Vec<String>,
 }
 
@@ -23,21 +22,6 @@ impl SongIter {
                 "On the tenth day of Christmas, my true love sent to me Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
                 "On the eleventh day of Christmas, my true love sent to me Eleven pipers piping, Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
                 "On the twelfth day of Christmas, my true love sent to me Twelve drummers drumming, Eleven pipers piping, Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree!".to_string(),
-            ],
-            computed_storage:
-            vec![
-                "A partridge in a pear tree.".to_string(),
-                "Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Eleven pipers piping, Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree.".to_string(),
-                "Twelve drummers drumming, Eleven pipers piping, Ten lords a-leaping, Nine ladies dancing, Eight maids a-milking, Seven swans a-swimming, Six geese a-laying, Five gold rings, Four calling birds, Three French hens, Two turtle doves, And a partridge in a pear tree!".to_string(),
             ],
             parts: vec![
                 "A partridge in a pear tree".to_string(),
@@ -83,9 +67,6 @@ impl SongIter {
     pub fn compute(&self, day: usize) -> String {
         let terminator = if day == 11 { "!" } else { "." };
         format!("{} {}{}", self.nth_day(day), self.rest(day), terminator)
-    }
-    pub fn compute_intermediate(&self, day: usize) -> String {
-        format!("{} {}", self.nth_day(day), self.computed_storage[day])
     }
 
     // https://stackoverflow.com/questions/38406793/why-is-capitalizing-the-first-letter-of-a-string-so-convoluted-in-rust
@@ -136,11 +117,7 @@ impl Iterator for SongIter {
     fn next(&mut self) -> Option<Self::Item> {
         if self.current < (self.storage.len()) {
             let hardcoded_value = self.storage[self.current].to_string();
-            let computed = if true {
-                self.compute(self.current)
-            } else {
-                self.compute_intermediate(self.current)
-            };
+            let computed = self.compute(self.current);
             assert_eq!(computed, hardcoded_value);
             self.current += 1;
             return Some(hardcoded_value);
