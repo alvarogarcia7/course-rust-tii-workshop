@@ -13,6 +13,11 @@ static SONG_PARTS: [&str; 12] = [
     "Twelve drummers drumming",
 ];
 
+static SONG_DAYS: [&str; 12] = [
+    "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth",
+    "eleventh", "twelfth",
+];
+
 struct SongIter {
     current: usize,
 }
@@ -22,23 +27,8 @@ impl SongIter {
         Self { current: 0 }
     }
 
-    // TODO AGB repeat here.
     fn nth_day(&self, day: usize) -> String {
-        let ordinal = match day + 1 {
-            1 => "first".to_string(),
-            2 => "second".to_string(),
-            3 => "third".to_string(),
-            4 => "fourth".to_string(),
-            5 => "fifth".to_string(),
-            6 => "sixth".to_string(),
-            7 => "seventh".to_string(),
-            8 => "eighth".to_string(),
-            9 => "ninth".to_string(),
-            10 => "tenth".to_string(),
-            11 => "eleventh".to_string(),
-            12 => "twelfth".to_string(),
-            _ => todo!(),
-        };
+        let ordinal = SONG_DAYS[day];
 
         format!(
             "On the {} day of Christmas, my true love sent to me",
