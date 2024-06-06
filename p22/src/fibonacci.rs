@@ -1,10 +1,10 @@
 //! Fibonacci series - Recursive implementation
 //! # Examples
 //! ```
-//! use p22::fibonacci::fibonacci_recursive;
-//! assert_eq!(0, fibonacci_recursive(0));
-//! assert_eq!(1, fibonacci_recursive(1));
-//! assert_eq!(1, fibonacci_recursive(2));
+//! use p22::fibonacci::fibonacci_recursive as fib;
+//! assert_eq!(0, fib(0));
+//! assert_eq!(1, fib(1));
+//! assert_eq!(1, fib(2));
 //! ```
 pub fn fibonacci_recursive(n: u32) -> u64 {
     match n {
@@ -14,7 +14,15 @@ pub fn fibonacci_recursive(n: u32) -> u64 {
     }
 }
 
-fn fibonacci_non_recursive(n: u32) -> u64 {
+/// Fibonacci series - Non Recursive implementation
+/// # Examples
+/// ```
+/// use p22::fibonacci::fibonacci_non_recursive as fib;
+/// assert_eq!(0, fib(0));
+/// assert_eq!(1, fib(1));
+/// assert_eq!(1, fib(2));
+/// ```
+pub fn fibonacci_non_recursive(n: u32) -> u64 {
     match n {
         0 => return 0,
         1 => return 1,
