@@ -1,3 +1,6 @@
+#![feature(test)]
+extern crate test;
+
 mod fibonacci;
 
 /// Convert Celsius degrees to Fahrenheit degrees

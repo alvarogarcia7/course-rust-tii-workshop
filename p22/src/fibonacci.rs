@@ -17,7 +17,8 @@ fn fibonacci_non_recursive(n: u32) -> u64 {
     let mut past_2 = fibonacci_non_recursive(0);
     let mut past = fibonacci_non_recursive(1);
     let mut number = fibonacci_non_recursive(2);
-    for _ in 2u64..(n as u64 + 1) {
+    // Range inclusive syntax ..= - source: https://bencher.dev/learn/benchmarking/rust/libtest-bench/
+    for _ in 2u64..=n as u64 {
         number = past + past_2;
 
         // Shift the memory registers to the past
@@ -125,5 +126,32 @@ mod tests_non_recursive {
                 index, expected_fibonacci_number, actual_fibonacci_number
             );
         }
+    }
+}
+
+#[cfg(test)]
+mod benchmarks {
+    use test::Bencher;
+
+    use super::*;
+
+    #[bench]
+    fn recursive(b: &mut Bencher) {
+        b.iter(|| {
+            for i in 1..=30 {
+                fibonacci_recursive(i);
+            }
+            std::hint::black_box(());
+        });
+    }
+
+    #[bench]
+    fn non_recursive(b: &mut Bencher) {
+        b.iter(|| {
+            for i in 1..=30 {
+                fibonacci_non_recursive(i);
+            }
+            std::hint::black_box(());
+        });
     }
 }
