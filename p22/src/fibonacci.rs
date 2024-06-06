@@ -144,28 +144,3 @@ mod tests_non_recursive {
         }
     }
 }
-
-#[cfg(test)]
-mod benchmarks {
-    use test::Bencher;
-
-    use super::*;
-
-    #[bench]
-    fn non_recursive(b: &mut Bencher) {
-        b.iter(|| {
-            for i in 1..=30 {
-                fibonacci_non_recursive(std::hint::black_box(i));
-            }
-        });
-    }
-
-    #[bench]
-    fn recursive(b: &mut Bencher) {
-        b.iter(|| {
-            for i in 1..=30 {
-                fibonacci_recursive(std::hint::black_box(i));
-            }
-        });
-    }
-}
