@@ -1,4 +1,4 @@
-static PARTS_STATIC: [&str; 12] = [
+static SONG_PARTS: [&str; 12] = [
     "A partridge in a pear tree",
     "Two turtle doves",
     "Three French hens",
@@ -62,7 +62,7 @@ impl SongIter {
     }
     fn rest(&self, day: usize) -> String {
         if day == 0 {
-            return PARTS_STATIC[day].to_string();
+            return SONG_PARTS[day].to_string();
         }
         let selected_days = 1..day + 1;
 
@@ -71,14 +71,14 @@ impl SongIter {
                 "{},",
                 selected_days
                     .rev()
-                    .map(|day| PARTS_STATIC[day].to_string())
+                    .map(|day| SONG_PARTS[day].to_string())
                     .collect::<Vec<String>>()
                     .join(", ")
             )
         } else {
-            format!("{},", PARTS_STATIC[day])
+            format!("{},", SONG_PARTS[day])
         };
-        let mut final_part = PARTS_STATIC[0].to_string();
+        let mut final_part = SONG_PARTS[0].to_string();
         self.make_first_lowercase(&mut final_part);
         format!("{} And {}", initial, final_part)
     }
@@ -88,7 +88,7 @@ impl Iterator for SongIter {
     type Item = String;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.current < PARTS_STATIC.len() {
+        if self.current < SONG_PARTS.len() {
             let return_value = self.compute(self.current);
             self.current += 1;
             return Some(return_value);
