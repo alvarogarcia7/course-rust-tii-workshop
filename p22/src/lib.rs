@@ -1,7 +1,7 @@
 #![feature(test)]
 extern crate test;
 
-mod fibonacci;
+pub mod fibonacci;
 
 /// Convert Celsius degrees to Fahrenheit degrees
 // Example for good documentation: https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#944

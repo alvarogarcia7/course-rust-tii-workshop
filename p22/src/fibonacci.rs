@@ -1,4 +1,12 @@
-fn fibonacci_recursive(n: u32) -> u64 {
+//! Fibonacci series - Recursive implementation
+//! # Examples
+//! ```
+//! use p22::fibonacci::fibonacci_recursive;
+//! assert_eq!(0, fibonacci_recursive(0));
+//! assert_eq!(1, fibonacci_recursive(1));
+//! assert_eq!(1, fibonacci_recursive(2));
+//! ```
+pub fn fibonacci_recursive(n: u32) -> u64 {
     match n {
         0 => 0,
         1 => 1,
