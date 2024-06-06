@@ -45,7 +45,6 @@ static FIBONACCI_NUMBERS: [u64; 41] = [
     102334155u64,
 ];
 
-#[cfg(test)]
 mod tests_recursive {
     use super::*;
 
@@ -72,7 +71,6 @@ mod tests_recursive {
     }
 }
 
-#[cfg(test)]
 mod tests_non_recursive {
     use super::*;
 
