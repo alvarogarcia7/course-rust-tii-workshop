@@ -6,6 +6,27 @@ fn fibonacci_recursive(n: u32) -> u64 {
     }
 }
 
+fn fibonacci_non_recursive(n: u32) -> u64 {
+    match n {
+        0 => return 0,
+        1 => return 1,
+        2 => return 1,
+        _ => None::<String>,
+    };
+    assert!(n >= 2);
+    let mut past_2 = fibonacci_non_recursive(0);
+    let mut past = fibonacci_non_recursive(1);
+    let mut number = fibonacci_non_recursive(2);
+    for _ in 2u64..(n as u64 + 1) {
+        number = past + past_2;
+
+        // Shift the memory registers to the past
+        past_2 = past;
+        past = number;
+    }
+    number
+}
+
 // TODO: is this configuration useful?
 #[cfg(test)]
 // Source: https://oeis.org/A000045
@@ -74,7 +95,34 @@ mod tests_recursive {
             assert_eq!(
                 expected_fibonacci_number, actual_fibonacci_number,
                 "error: fibonacci({}) is not {}. actual: {}",
-                index, actual_fibonacci_number, expected_fibonacci_number
+                index, expected_fibonacci_number, actual_fibonacci_number
+            );
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests_non_recursive {
+    use super::*;
+
+    #[test]
+    fn base_0() {
+        assert_eq!(0, fibonacci_non_recursive(0))
+    }
+
+    #[test]
+    fn base_1() {
+        assert_eq!(1, fibonacci_non_recursive(1))
+    }
+
+    #[test]
+    fn kat() {
+        for (index, &expected_fibonacci_number) in FIBONACCI_NUMBERS.iter().enumerate() {
+            let actual_fibonacci_number = fibonacci_non_recursive(index as u32);
+            assert_eq!(
+                expected_fibonacci_number, actual_fibonacci_number,
+                "error: fibonacci({}) is not {}. actual: {}",
+                index, expected_fibonacci_number, actual_fibonacci_number
             );
         }
     }
