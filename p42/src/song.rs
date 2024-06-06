@@ -262,23 +262,32 @@ mod tests {
             .map(|line: &String| line.get(0..3).unwrap().to_string())
             .collect::<Vec<String>>();
 
+        let prefixes_from_actual: Vec<String> =
+            prefix_with_line_number::<SongIter>(1, SongIter::new())
+                .iter()
+                .map(|line: &String| line.get(0..3).unwrap().to_string())
+                .collect::<Vec<String>>();
+
         assert_eq!(
             prefixes,
             vec![
-                "01:", "02:", "03:", "04:", "05:", "06:", "07:", "08:", "09:", "10:", "11:", "12:"
+                "01:", "02:", "03:", "04:", "05:", "06:", "07:", "08:", "09:", "10:", "11:", "12:",
             ]
         );
+
+        assert_eq!(prefixes_from_actual, prefixes);
     }
 
-    // fn prefix_with_line_number<T: Iterator>(starting_number: i32, iter: &impl T) -> Vec<String> {
-    //     let mut line_number = starting_number;
-    //     iter.into().map(
-    //         |line| {
-    //             let return_value = format!("{:0>2}: {}", line_number, line);
-    //             line_number += 1;
-    //             return_value
-    //         })
-    //
-    //         .collect()
-    // }
+    fn prefix_with_line_number<T: Iterator>(starting_number: i32, iter: T) -> Vec<String>
+    where
+        <T as std::iter::Iterator>::Item: std::fmt::Display,
+    {
+        let mut line_number = starting_number;
+        iter.map(|line| {
+            let return_value = format!("{:0>2}: {}", line_number, line);
+            line_number += 1;
+            return_value
+        })
+        .collect::<Vec<String>>()
+    }
 }
