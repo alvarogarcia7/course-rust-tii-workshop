@@ -6,6 +6,7 @@ fn fibonacci_recursive(n: u32) -> u64 {
     }
 }
 
+// TODO: is this configuration useful?
 #[cfg(test)]
 // Source: https://oeis.org/A000045
 static FIBONACCI_NUMBERS: [u64; 41] = [
@@ -55,6 +56,7 @@ static FIBONACCI_NUMBERS: [u64; 41] = [
 #[cfg(test)]
 mod tests_recursive {
     use super::*;
+
     #[test]
     fn base_0() {
         assert_eq!(0, fibonacci_recursive(0))
