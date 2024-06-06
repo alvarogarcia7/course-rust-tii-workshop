@@ -54,13 +54,6 @@ impl SongIter {
     }
 
     // https://stackoverflow.com/questions/38406793/why-is-capitalizing-the-first-letter-of-a-string-so-convoluted-in-rust
-    #[allow(dead_code)]
-    fn make_first_uppercase(&self, string: &mut str) {
-        if let Some(r) = string.get_mut(0..1) {
-            r.make_ascii_uppercase();
-        }
-    }
-    // https://stackoverflow.com/questions/38406793/why-is-capitalizing-the-first-letter-of-a-string-so-convoluted-in-rust
     fn make_first_lowercase(&self, string: &mut str) {
         if let Some(r) = string.get_mut(0..1) {
             r.make_ascii_lowercase();
@@ -71,7 +64,6 @@ impl SongIter {
             return self.parts[day].to_string();
         }
         let selected_days = 1..day + 1;
-        // let mut selected_days_string = Vec::with_capacity(10);
 
         let initial: String = if day > 1 {
             format!(
