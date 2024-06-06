@@ -1,6 +1,5 @@
 use p22::fibonacci::{fibonacci_non_recursive, fibonacci_recursive};
 
-#[cfg(test)]
 // Source: https://oeis.org/A000045
 static FIBONACCI_NUMBERS: [u64; 41] = [
     0,
