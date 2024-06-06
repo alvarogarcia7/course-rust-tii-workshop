@@ -1,3 +1,5 @@
+mod fibonacci;
+
 /// Convert Celsius degrees to Fahrenheit degrees
 // Example for good documentation: https://doc.rust-lang.org/src/alloc/vec/mod.rs.html#944
 pub fn celsius2fahrenheit(celsius: i32) -> i32 {
