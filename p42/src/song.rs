@@ -19,9 +19,7 @@ struct SongIter {
 
 impl SongIter {
     fn new() -> Self {
-        Self {
-            current: 0,
-        }
+        Self { current: 0 }
     }
 
     // TODO AGB repeat here.
@@ -46,7 +44,7 @@ impl SongIter {
             "On the {} day of Christmas, my true love sent to me",
             ordinal
         )
-            .to_string()
+        .to_string()
     }
 
     pub fn compute(&self, day: usize) -> String {
@@ -67,6 +65,9 @@ impl SongIter {
         let selected_days = 1..day + 1;
 
         let initial: String = if day > 1 {
+            // https://doc.rust-lang.org/beta/alloc/string/struct.String.html#method.with_capacity
+            // s.push(char)
+            // s.push(&String)
             format!(
                 "{},",
                 selected_days
@@ -279,8 +280,8 @@ mod tests {
 
     fn prefix_with_line_number(
         mut line_num: i32,
-        iter: impl Iterator<Item=String>,
-    ) -> impl Iterator<Item=String> {
+        iter: impl Iterator<Item = String>,
+    ) -> impl Iterator<Item = String> {
         iter.map(move |line| {
             let return_value = format!("{:0>2}: {}", line_num, line);
             line_num += 1;
