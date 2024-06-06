@@ -243,4 +243,42 @@ mod tests {
 
         assert_eq!(iter_actual, expected);
     }
+
+    #[test]
+    fn full_text_with_decorated_lines() {
+        // let iter_actual: Vec<String> = prefix_with_line_number(1, &SongIter::new());
+
+        let mut line_number = 1;
+        let iter_actual = SongIter::new()
+            .map(|line| {
+                let return_value = format!("{:0>2}: {}", line_number, line);
+                line_number += 1;
+                return_value
+            })
+            .collect::<Vec<String>>();
+
+        let prefixes = iter_actual
+            .iter()
+            .map(|line: &String| line.get(0..3).unwrap().to_string())
+            .collect::<Vec<String>>();
+
+        assert_eq!(
+            prefixes,
+            vec![
+                "01:", "02:", "03:", "04:", "05:", "06:", "07:", "08:", "09:", "10:", "11:", "12:"
+            ]
+        );
+    }
+
+    // fn prefix_with_line_number<T: Iterator>(starting_number: i32, iter: &impl T) -> Vec<String> {
+    //     let mut line_number = starting_number;
+    //     iter.into().map(
+    //         |line| {
+    //             let return_value = format!("{:0>2}: {}", line_number, line);
+    //             line_number += 1;
+    //             return_value
+    //         })
+    //
+    //         .collect()
+    // }
 }
