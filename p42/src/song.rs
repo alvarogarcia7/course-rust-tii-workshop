@@ -269,13 +269,4 @@ mod tests {
         assert_eq!(strsx_actual, strsx);
     }
 
-    #[test]
-    fn third() {
-        let mut iter = SongIter::new();
-        // skip
-        let _ = iter.next();
-        let _ = iter.next();
-        let x = iter.next();
-        println!("{x:?}")
-    }
 }
