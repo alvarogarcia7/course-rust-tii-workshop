@@ -238,34 +238,16 @@ mod tests {
 
     #[test]
     fn full_text_with_decorated_lines() {
-        // let iter_actual: Vec<String> = prefix_with_line_number(1, &SongIter::new());
-
-        let mut line_number = 1;
-        let iter_actual = SongIter::new()
-            .map(|line| {
-                let return_value = format!("{:0>2}: {}", line_number, line);
-                line_number += 1;
-                return_value
-            })
-            .collect::<Vec<String>>();
-
-        let prefixes = iter_actual
-            .iter()
-            .map(|line: &String| line.get(0..3).unwrap().to_string())
-            .collect::<Vec<String>>();
-
         let prefixes_from_actual: Vec<String> = prefix_with_line_number(1, SongIter::new())
             .map(|line| line.get(0..3).unwrap().to_string())
             .collect::<Vec<String>>();
 
         assert_eq!(
-            prefixes,
+            prefixes_from_actual,
             vec![
                 "01:", "02:", "03:", "04:", "05:", "06:", "07:", "08:", "09:", "10:", "11:", "12:",
             ]
         );
-
-        assert_eq!(prefixes_from_actual, prefixes);
     }
 
     fn prefix_with_line_number(
