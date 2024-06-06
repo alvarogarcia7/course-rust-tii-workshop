@@ -85,13 +85,9 @@ impl SongIter {
         } else {
             format!("{},", self.parts[day])
         };
-        let mut final_ = self.parts[0].to_string();
-        self.make_first_lowercase(&mut final_);
-        let maybe_separator = match day {
-            0 => "", // dead
-            _ => " And ",
-        };
-        format!("{}{}{}", initial, maybe_separator, final_)
+        let mut final_part = self.parts[0].to_string();
+        self.make_first_lowercase(&mut final_part);
+        format!("{} And {}", initial, final_part)
     }
 }
 
