@@ -239,8 +239,8 @@ mod tests {
     fn full_text_without_decoration() {
         let expected = base_data();
 
-        let strsx_actual: Vec<String> = SongIter::new().collect();
+        let iter_actual: Vec<String> = SongIter::new().collect();
 
-        assert_eq!(strsx_actual, expected);
+        assert_eq!(iter_actual, expected);
     }
 }
