@@ -24,6 +24,7 @@ impl BigUint4096 {
 
     pub fn sum(&mut self, another: &Self) {
         self.value[63] += another.value[63];
+        self.value[62] += another.value[62];
     }
 }
 

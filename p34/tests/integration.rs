@@ -38,4 +38,26 @@ pub mod integration {
 
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    fn add_one_to_two_limbs() {
+        let expected = {
+            let mut operand = [0; 64];
+            operand[operand.len() - 1] = 1u64;
+            operand[operand.len() - 2] = 1u64;
+            BigUint4096::from(operand)
+        };
+
+        let actual = {
+            let mut operand = [0; 64];
+            operand[operand.len() - 1] = 1u64;
+            operand[operand.len() - 2] = 1u64;
+            let one = BigUint4096::from(operand);
+            let mut actual = BigUint4096::new();
+            actual.sum(&one);
+            actual
+        };
+
+        assert_eq!(actual, expected);
+    }
 }
