@@ -2,8 +2,28 @@
 pub struct User {
     name: String,
     credit_line: u64,
+    // balance: BalanceAmount,
     balance: i64,
 }
+
+#[allow(dead_code)]
+pub struct BalanceAmount {
+    value: i64,
+}
+
+// newtype pattern - style of programming
+// possible with zero-cost abstraction
+// use transparent attribute
+
+// impl BalanceAmount {
+//     fn is_credit(&self) -> bool{
+//         self.value < 0
+//     }
+//
+//     fn is_debit(&self) -> bool {
+//         self.value >= 0
+//     }
+// }
 
 trait BalanceAccessor {
     fn get_balance(&self) -> i64;
