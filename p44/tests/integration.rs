@@ -51,14 +51,26 @@ pub mod tests {
     }
 
     #[test]
-    pub fn n_elements() {
-        let expected = HashMap::<u64, bool>::from([
-            (42, true), (43, true), (44, false)]);
+    pub fn n_elements_with_trailing_comma() {
+        let expected = HashMap::<u64, bool>::from([(42, true), (43, true), (44, false)]);
 
         let actual = hashmap!(
             42 => true,
             43 => true,
             44 => false,
+        );
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    pub fn n_elements_without_trailing_comma() {
+        let expected = HashMap::<u64, bool>::from([(42, true), (43, true), (44, false)]);
+
+        let actual = hashmap!(
+            42 => true,
+            43 => true,
+            44 => false
         );
 
         assert_eq!(expected, actual);
