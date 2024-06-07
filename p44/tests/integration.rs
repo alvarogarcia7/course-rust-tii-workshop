@@ -26,4 +26,15 @@ pub mod tests {
 
         assert_eq!(expected, actual);
     }
+
+    #[test]
+    pub fn one_element_with_trailing_comma() {
+        let expected = HashMap::<u64, bool>::from([(42, true)]);
+
+        let actual = hashmap!(
+            42 => true,
+        );
+
+        assert_eq!(expected, actual);
+    }
 }
