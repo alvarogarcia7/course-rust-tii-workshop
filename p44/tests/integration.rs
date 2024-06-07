@@ -37,4 +37,16 @@ pub mod tests {
 
         assert_eq!(expected, actual);
     }
+
+    #[test]
+    pub fn two_elements() {
+        let expected = HashMap::<u64, bool>::from([(42, true), (43, true)]);
+
+        let actual = hashmap!(
+            42 => true,
+            43 => true,
+        );
+
+        assert_eq!(expected, actual);
+    }
 }
