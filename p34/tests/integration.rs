@@ -68,4 +68,13 @@ pub mod integration {
 
         assert_eq!(operand_1, expected);
     }
+
+    #[test]
+    #[should_panic]
+    fn overflow_the_structure_should_panic() {
+        let mut operand_1 = BigUint4096::from([u64::MAX; 64]);
+        let operand_2 = build_biguint4096!(100);
+
+        operand_1.sum(&operand_2);
+    }
 }
