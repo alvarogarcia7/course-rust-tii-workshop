@@ -23,10 +23,10 @@ macro_rules! hashmap {
 #[macro_export]
 // Source: src/macros.rs - vec!
 macro_rules! hashmap_poorgeneric {
-    ( $(<)+ $key_type:ty $(,)+ $value_type:ty $(>)+)  => {
+    ( < $key_type:ty , $value_type:ty >)  => {
         HashMap::<$key_type, $value_type>::new();
     };
-    ( $(<)+ $key_type:ty $(,)+ $value_type:ty $(>)+ $(,)+ $($key:expr => $value:expr $(,)?)+)  => {
+    ( < $key_type:ty , $value_type:ty > , $($key:expr => $value:expr $(,)?)+)  => {
         HashMap::<$key_type, $value_type>::from([$(($key, $value) ,)*]);
     };
 }
