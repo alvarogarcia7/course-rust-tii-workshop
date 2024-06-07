@@ -39,12 +39,24 @@ pub mod tests {
     }
 
     #[test]
-    pub fn two_elements() {
+    pub fn two_elements_with_trailing_comma() {
         let expected = HashMap::<u64, bool>::from([(42, true), (43, true)]);
 
         let actual = hashmap!(
             42 => true,
             43 => true,
+        );
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    pub fn two_elements_without_trailing_comma() {
+        let expected = HashMap::<u64, bool>::from([(42, true), (43, true)]);
+
+        let actual = hashmap!(
+            42 => true,
+            43 => true
         );
 
         assert_eq!(expected, actual);
