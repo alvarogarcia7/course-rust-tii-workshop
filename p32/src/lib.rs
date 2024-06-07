@@ -1,2 +1,2 @@
-mod bank;
-mod shapes;
+pub mod bank;
+pub mod shapes;
