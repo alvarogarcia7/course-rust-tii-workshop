@@ -48,15 +48,15 @@ pub mod integration {
     }
 
     #[test]
-    #[rustfmt::skip]
     fn add_one_to_all_limbs_with_carry() {
-        let expected = build_biguint4096!(0,        0,        1, 0, 0, u64::MAX, 1);
-        let mut operand_1 = build_biguint4096!(u64::MAX, u64::MAX, 0, 0, 0, u64::MAX  0);
-        let operand_2 = build_biguint4096!(1,        0,        0, 0, 0, 0,        1);
+        let m = u64::MAX;
+        let mut operand_1 = build_biguint4096!(m, m, 0, 0, 0, m, 0);
+        let ____operand_2 = build_biguint4096!(1, 0, 0, 0, 0, 0, 1);
+        let _____expected = build_biguint4096!(0, 0, 1, 0, 0, m, 1);
 
-        operand_1.sum(&operand_2);
+        operand_1.sum(&____operand_2);
 
-        assert_eq!(operand_1, expected);
+        assert_eq!(operand_1, _____expected);
     }
 
     #[test]
