@@ -65,7 +65,7 @@ impl User {
 
 impl MaxCredit for User {
     fn max_credit(&self) -> u64 {
-        self.balance as u64 + self.credit_line
+        <i64 as TryInto<u64>>::try_into(self.balance).unwrap() + self.credit_line
     }
 }
 
