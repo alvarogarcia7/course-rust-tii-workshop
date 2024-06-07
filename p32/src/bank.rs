@@ -145,11 +145,7 @@ impl Bank {
         self.users.iter().find(|&user| user.name == user_id)
     }
     fn get_user_index_by_id(&self, user_id: &str) -> Option<usize> {
-        self.users
-            .iter()
-            .enumerate()
-            .find(|(_, user)| user.name == user_id)
-            .map(|(a, _)| a)
+        self.users.iter().position(|user| user.name == user_id)
     }
     pub(crate) fn transfer(
         &mut self,
