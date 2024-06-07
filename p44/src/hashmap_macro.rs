@@ -10,9 +10,6 @@ macro_rules! hashmap {
     () => {
         HashMap::<u64, bool>::new();
     };
-    ($key:expr => $value:expr $(,)?) => {
-        HashMap::<u64, bool>::from([($key, $value)]);
-    };
     ($($key:expr => $value:expr $(,)?)*) => {
         HashMap::<u64, bool>::from([$(($key, $value) ,)*]);
     };
