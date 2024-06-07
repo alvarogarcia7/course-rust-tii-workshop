@@ -147,7 +147,7 @@ impl Bank {
     fn get_user_index_by_id(&self, user_id: &str) -> Option<usize> {
         self.users.iter().position(|user| user.name == user_id)
     }
-    pub(crate) fn transfer(
+    pub(crate) fn transfer_funds(
         &mut self,
         origin_username: &str,
         destination_username: &str,
@@ -299,7 +299,7 @@ mod tests_bank {
         let user2 = User::new("user2".to_string(), 1, 90);
         let mut bank = Bank::new(vec![user1, user2], "First Bank".to_string(), 1, 4);
 
-        let result = bank.transfer("user1", "user2", 2);
+        let result = bank.transfer_funds("user1", "user2", 2);
 
         assert!(result);
         assert_eq!(
@@ -318,7 +318,7 @@ mod tests_bank {
         let user2 = User::new("user2".to_string(), 1, 90);
         let mut bank = Bank::new(vec![user1, user2], "First Bank".to_string(), 1, 4);
 
-        let result = bank.transfer("user1", "user2", 2);
+        let result = bank.transfer_funds("user1", "user2", 2);
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
@@ -333,7 +333,7 @@ mod tests_bank {
         let user2 = User::new("user2".to_string(), 0, 1);
         let mut bank = Bank::new(vec![user2], "First Bank".to_string(), 1, 4);
 
-        let result = bank.transfer("NON_EXISTING", "user2", 2);
+        let result = bank.transfer_funds("NON_EXISTING", "user2", 2);
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 1);
@@ -344,7 +344,7 @@ mod tests_bank {
         let user2 = User::new("user2".to_string(), 0, 1);
         let mut bank = Bank::new(vec![user2], "First Bank".to_string(), 1, 4);
 
-        let result = bank.transfer("user2", "NON_EXISTING", 2);
+        let result = bank.transfer_funds("user2", "NON_EXISTING", 2);
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 1);
@@ -356,7 +356,7 @@ mod tests_bank {
         let user2 = User::new("user2".to_string(), 1, 90);
         let mut bank = Bank::new(vec![user1, user2], "First Bank".to_string(), 1, 4);
 
-        let result = bank.transfer("user1", "user2", -2);
+        let result = bank.transfer_funds("user1", "user2", -2);
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
@@ -372,7 +372,7 @@ mod tests_bank {
         let user2 = User::new("user2".to_string(), 1, 90);
         let mut bank = Bank::new(vec![user1, user2], "First Bank".to_string(), 1, 4);
 
-        let result = bank.transfer("user1", "user2", 0);
+        let result = bank.transfer_funds("user1", "user2", 0);
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
