@@ -8,7 +8,7 @@
 // Source: src/macros.rs - vec!
 macro_rules! hashmap {
     () => {
-        HashMap::<u64, bool>::new();
+        HashMap::new();
     };
     ($($key:expr => $value:expr $(,)?)+) => {
         // Source: slides 4-3.pdf, slide number 8
