@@ -151,9 +151,9 @@ impl Bank {
         &mut self,
         origin_username: &str,
         destination_username: &str,
-        amount: i64,
+        amount: u64,
     ) -> bool {
-        if amount <= 0 {
+        if amount == 0 {
             return false;
         }
         // let users_iter_mut = self.users.iter_mut();
@@ -181,17 +181,18 @@ impl Bank {
             }
         };
 
-        let has_credit_limit = self.users[origin_index].max_credit() >= amount as u64;
+        let has_credit_limit = self.users[origin_index].max_credit() >= amount;
         if !has_credit_limit {
             return false;
         }
 
+        let amount_as_i64: i64 = amount.try_into().unwrap();
         {
-            let origin_balance = self.users[origin_index].get_balance() - amount;
+            let origin_balance = self.users[origin_index].get_balance() - amount_as_i64;
             self.users[origin_index].set_balance(origin_balance);
         }
         {
-            let destination_balance = self.users[destination_index].get_balance() + amount;
+            let destination_balance = self.users[destination_index].get_balance() + amount_as_i64;
             self.users[destination_index].set_balance(destination_balance);
         }
 
@@ -351,28 +352,12 @@ mod tests_bank {
     }
 
     #[test]
-    fn transfer_funds_amount_cannot_be_negative() {
-        let user1 = User::new("user1".to_string(), 10, 1);
-        let user2 = User::new("user2".to_string(), 1, 90);
-        let mut bank = Bank::new(vec![user1, user2], "First Bank".to_string(), 1, 4);
-
-        let result = bank.transfer_funds("user1", "user2", -2);
-
-        assert!(!result);
-        assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
-        assert_eq!(
-            bank.get_user_by_id("user2".to_string()).unwrap().balance,
-            90
-        );
-    }
-
-    #[test]
     fn transfer_funds_amount_cannot_be_zero() {
         let user1 = User::new("user1".to_string(), 10, 1);
         let user2 = User::new("user2".to_string(), 1, 90);
         let mut bank = Bank::new(vec![user1, user2], "First Bank".to_string(), 1, 4);
 
-        let result = bank.transfer_funds("user1", "user2", 0);
+        let result = bank.transfer_funds("user1", "user2", 0u64);
 
         assert!(!result);
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
