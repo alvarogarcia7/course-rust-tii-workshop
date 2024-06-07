@@ -26,7 +26,36 @@ impl BigUint4096 {
 
     pub fn sum(&mut self, another: &Self) {
         for i in 0..self.value.len() {
-            self.value[i] += another.value[i];
+            self.sum_one_limb(i, another, 0)
+        }
+    }
+
+    fn sum_two_numbers(a: u64, b: u64) -> (u64, u64) {
+        match a.checked_add(b) {
+            None => {
+                // 7 + 4 = 11
+                // MAX = 9 (one digit)
+                // 11 % 10 = 1
+
+                // MAX - 7 = 2
+                // 4 - 2 - 1 = 1 (one digit, no overflows)
+                let x = u64::MAX - a;
+                let y = b - x - 1;
+                (y, 1u64)
+            }
+            Some(non_overflow) => (non_overflow, 0),
+        }
+    }
+    fn sum_one_limb(&mut self, i: usize, another: &Self, carry: u64) {
+        let (x, carry1) = Self::sum_two_numbers(self.value[i], another.value[i]);
+        let (y, carry2) = Self::sum_two_numbers(x, carry);
+
+        self.value[i] = y;
+
+        let total_carry = carry2 + carry1;
+
+        if total_carry != 0 {
+            self.sum_one_limb(i + 1, another, total_carry)
         }
     }
 }
