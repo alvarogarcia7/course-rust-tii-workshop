@@ -25,8 +25,12 @@ impl BigUint4096 {
     }
 
     pub fn sum(&mut self, another: &Self) {
+        let mut carry = 0;
         for i in 0..self.value.len() {
-            self.sum_one_limb(i, another, 0)
+            carry = self.sum_one_limb(i, another, carry)
+        }
+        if carry != 0 {
+            panic!("You are overflowing the structure")
         }
     }
 
@@ -46,20 +50,13 @@ impl BigUint4096 {
             Some(non_overflow) => (non_overflow, 0),
         }
     }
-    fn sum_one_limb(&mut self, i: usize, another: &Self, carry: u64) {
-        if i == self.value.len() {
-            panic!("You are overflowing the structure")
-        }
+    fn sum_one_limb(&mut self, i: usize, another: &Self, carry: u64) -> u64 {
         let (x, carry1) = Self::sum_two_numbers(self.value[i], another.value[i]);
         let (y, carry2) = Self::sum_two_numbers(x, carry);
 
         self.value[i] = y;
 
-        let total_carry = carry2 + carry1;
-
-        if total_carry != 0 {
-            self.sum_one_limb(i + 1, another, total_carry)
-        }
+        carry2 + carry1
     }
 }
 

@@ -51,8 +51,8 @@ pub mod integration {
     fn add_one_to_all_limbs_with_carry() {
         let m = u64::MAX;
         let mut _operand_1 = build_biguint4096!(m, m, 0, 0, 0, m, 0);
-        let _____operand_2 = build_biguint4096!(1, 0, 0, 0, 0, 0, 1);
-        let ______expected = build_biguint4096!(0, 0, 1, 0, 0, m, 1);
+        let _____operand_2 = build_biguint4096!(1, 0, 0, 0, 0, 1, 1);
+        let ______expected = build_biguint4096!(0, 0, 1, 0, 0, 0, 2);
 
         _operand_1.sum(&_____operand_2);
 
