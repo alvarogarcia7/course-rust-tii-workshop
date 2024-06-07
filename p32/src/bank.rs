@@ -213,17 +213,15 @@ impl Bank {
     pub(crate) fn accrue_interest(&mut self) -> bool {
         for user in self.users.iter_mut() {
             if is_debit(&user.balance) {
-                let new_balance = <i64 as TryInto<u64>>::try_into(user.balance).unwrap()
-                    * (self.debit_interest)
+                let new_balance = user.balance
+                    * (<u64 as TryInto<i64>>::try_into(self.debit_interest).unwrap())
                     / 10_000;
-                let result: i64 = new_balance.try_into().unwrap();
-                user.balance += result;
+                user.balance += new_balance;
             } else {
-                let new_balance = <i64 as TryInto<u64>>::try_into(-user.balance).unwrap()
-                    * (self.credit_interest)
+                let new_balance = user.balance
+                    * (<u64 as TryInto<i64>>::try_into(self.credit_interest).unwrap())
                     / 10_000;
-                let result: i64 = new_balance.try_into().unwrap();
-                user.balance -= result;
+                user.balance += new_balance;
             }
         }
         true
