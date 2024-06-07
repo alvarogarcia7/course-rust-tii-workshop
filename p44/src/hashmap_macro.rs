@@ -13,8 +13,8 @@ macro_rules! hashmap {
     ($key:expr => $value:expr $(,)?) => {
         HashMap::<u64, bool>::from([($key, $value)]);
     };
-    ($key:expr => $value:expr , $key2:expr => $value2:expr ,) => {
-        HashMap::<u64, bool>::from([($key, $value), ($key2, $value2)]);
+    ($($key:expr => $value:expr $(,)?)*) => {
+        HashMap::<u64, bool>::from([$(($key, $value) ,)*]);
     }; // ($($x:expr),+ $(,)?) => (
        //     $crate::__rust_force_expr!(<[_]>::into_vec(
        //         // This rustc_box is not required, but it produces a dramatic improvement in compile
