@@ -25,6 +25,18 @@ pub struct BalanceAmount {
 //     }
 // }
 
+// inherent methods - not tied to any trait
+// In double-entry accounting — credits record outgoing money
+fn is_credit(value: &i64) -> bool {
+    value < &0
+}
+
+// inherent methods - not tied to any trait
+// In double-entry accounting — debits record incoming money
+fn is_debit(value: &i64) -> bool {
+    value >= &0
+}
+
 trait BalanceAccessor {
     fn get_balance(&self) -> i64;
     fn set_balance(&mut self, value: i64);
@@ -97,11 +109,24 @@ pub struct BalanceSheet {
 
 impl Balance for Bank {
     fn balance(&self) -> BalanceSheet {
-        let total_assets = self.users.iter().map(|user| user.get_balance()).sum();
-        let total_liabilities = self.users.iter().map(|user| user.credit_line).sum();
+        let total_liabilities: i64 = self
+            .users
+            .iter()
+            .filter(|user| is_credit(&user.balance))
+            .map(|user| user.balance)
+            .sum();
+
+        let total_assets: i64 = self
+            .users
+            .iter()
+            .filter(|user| is_debit(&user.balance))
+            .map(|user| user.balance)
+            .sum();
+
+        let to: u64 = (-total_liabilities).try_into().unwrap();
         BalanceSheet {
             assets: total_assets,
-            liabilities: total_liabilities,
+            liabilities: to,
         }
     }
 }
@@ -257,7 +282,19 @@ mod tests_bank {
         let total_balance = bank.balance();
 
         assert_eq!(total_balance.assets, 1 + 90);
-        assert_eq!(total_balance.liabilities, 100 + 1);
+        assert_eq!(total_balance.liabilities, 0)
+    }
+
+    #[test]
+    fn calculate_balance_of_the_bank_when_there_are_credits() {
+        let user1 = User::new("John1".to_string(), 100, -1);
+        let user2 = User::new("John".to_string(), 1, 90);
+        let bank = Bank::new(vec![user1, user2], "First Bank".to_string(), 1, 4);
+
+        let total_balance = bank.balance();
+
+        assert_eq!(total_balance.assets, 90);
+        assert_eq!(total_balance.liabilities, 1);
     }
 
     #[test]
