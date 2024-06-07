@@ -18,4 +18,24 @@ pub mod integration {
 
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    fn add_one() {
+        let expected = {
+            let mut one = [0; 64];
+            one[one.len() - 1] = 1u64;
+            BigUint4096::from(one)
+        };
+
+        let actual = {
+            let mut one = [0; 64];
+            one[one.len() - 1] = 1u64;
+            let one_biguint = BigUint4096::from(one);
+            let mut actual = BigUint4096::new();
+            actual.sum(&one_biguint);
+            actual
+        };
+
+        assert_eq!(actual, expected);
+    }
 }

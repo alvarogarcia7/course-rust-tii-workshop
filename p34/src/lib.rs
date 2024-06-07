@@ -13,6 +13,10 @@ pub mod biguint {
         pub fn new() -> Self {
             Self::from([0; 64])
         }
+
+        pub fn sum(&mut self, another: &Self) {
+            self.value[63] += another.value[63];
+        }
     }
 
     impl Default for BigUint4096 {
