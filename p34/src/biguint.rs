@@ -47,6 +47,9 @@ impl BigUint4096 {
         }
     }
     fn sum_one_limb(&mut self, i: usize, another: &Self, carry: u64) {
+        if i == self.value.len() {
+            panic!("You are overflowing the structure")
+        }
         let (x, carry1) = Self::sum_two_numbers(self.value[i], another.value[i]);
         let (y, carry2) = Self::sum_two_numbers(x, carry);
 

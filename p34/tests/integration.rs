@@ -59,7 +59,7 @@ pub mod integration {
     }
 
     #[test]
-    fn add_one_to_all_limbs_with_carry_2() {
+    fn add_one_to_two_limbs_with_carry() {
         let expected = build_biguint4096!(99, 0, 1);
         let mut operand_1 = build_biguint4096!(u64::MAX, u64::MAX);
         let operand_2 = build_biguint4096!(100);
