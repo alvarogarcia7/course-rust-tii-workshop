@@ -7,7 +7,7 @@ pub mod tests_basic_version {
     pub fn empty_macro() {
         let expected = HashMap::<u64, bool>::new();
 
-        let actual = hashmap!();
+        let actual: HashMap<u64, bool> = hashmap!();
 
         assert_eq!(expected, actual);
     }
@@ -20,7 +20,7 @@ pub mod tests_basic_version {
 
         let expected = HashMap::<u64, bool>::from([(42, true)]);
 
-        let actual = hashmap!(
+        let actual: HashMap<u64, bool> = hashmap!(
             42 => true
         );
 
@@ -31,7 +31,7 @@ pub mod tests_basic_version {
     pub fn one_element_with_trailing_comma() {
         let expected = HashMap::<u64, bool>::from([(42, true)]);
 
-        let actual = hashmap!(
+        let actual: HashMap<u64, bool> = hashmap!(
             42 => true,
         );
 
@@ -42,7 +42,7 @@ pub mod tests_basic_version {
     pub fn two_elements_with_trailing_comma() {
         let expected = HashMap::<u64, bool>::from([(42, true), (43, true)]);
 
-        let actual = hashmap!(
+        let actual: HashMap<u64, bool> = hashmap!(
             42 => true,
             43 => true,
         );
@@ -54,7 +54,7 @@ pub mod tests_basic_version {
     pub fn two_elements_without_trailing_comma() {
         let expected = HashMap::<u64, bool>::from([(42, true), (43, true)]);
 
-        let actual = hashmap!(
+        let actual: HashMap<u64, bool> = hashmap!(
             42 => true,
             43 => true
         );
@@ -66,7 +66,7 @@ pub mod tests_basic_version {
     pub fn n_elements_with_trailing_comma() {
         let expected = HashMap::<u64, bool>::from([(42, true), (43, true), (44, false)]);
 
-        let actual = hashmap!(
+        let actual: HashMap<u64, bool> = hashmap!(
             42 => true,
             43 => true,
             44 => false,
@@ -79,7 +79,7 @@ pub mod tests_basic_version {
     pub fn n_elements_without_trailing_comma() {
         let expected = HashMap::<u64, bool>::from([(42, true), (43, true), (44, false)]);
 
-        let actual = hashmap!(
+        let actual: HashMap<u64, bool> = hashmap!(
             42 => true,
             43 => true,
             44 => false
@@ -98,7 +98,7 @@ pub mod tests_poorgeneric_version {
     pub fn zero_elements() {
         let expected = HashMap::<u64, u64>::new();
 
-        let actual = hashmap_poorgeneric!(<u64, u64>
+        let actual: HashMap<u64, u64> = hashmap_poorgeneric!(<u64, u64>
         );
 
         assert_eq!(expected, actual);
@@ -108,7 +108,7 @@ pub mod tests_poorgeneric_version {
     pub fn n_elements_without_trailing_comma() {
         let expected = HashMap::<u64, u64>::from([(42, 42), (43, 43), (44, 44)]);
 
-        let actual = hashmap_poorgeneric!(<u64, u64>,
+        let actual: HashMap<u64, u64> = hashmap_poorgeneric!(<u64, u64>,
             42 => 42,
             43 => 43,
             44 => 44,

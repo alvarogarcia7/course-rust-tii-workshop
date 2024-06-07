@@ -13,7 +13,7 @@ macro_rules! hashmap {
     ($($key:expr => $value:expr $(,)?)+) => {
         // Source: slides 4-3.pdf, slide number 8
         {
-            let mut hashmap = HashMap::<u64, bool>::new();
+            let mut hashmap = HashMap::new();
             $(hashmap.insert($key, $value);)*
             hashmap
         }
