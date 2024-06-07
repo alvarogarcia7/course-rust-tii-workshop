@@ -7,6 +7,8 @@
 // encoded String (be careful about endianness)
 // ● Add integration tests for the type
 
+/// BigUint64
+/// Note: the Least Significant Bit (LSB) is stored on position 0
 #[derive(Debug, PartialEq)]
 pub struct BigUint4096 {
     value: [u64; 64],
@@ -23,8 +25,9 @@ impl BigUint4096 {
     }
 
     pub fn sum(&mut self, another: &Self) {
-        self.value[63] += another.value[63];
-        self.value[62] += another.value[62];
+        for i in 0..self.value.len() {
+            self.value[i] += another.value[i];
+        }
     }
 }
 

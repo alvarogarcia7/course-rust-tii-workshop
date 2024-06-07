@@ -23,13 +23,13 @@ pub mod integration {
     fn add_one() {
         let expected = {
             let mut one = [0; 64];
-            one[one.len() - 1] = 1u64;
+            one[0] = 1u64;
             BigUint4096::from(one)
         };
 
         let actual = {
             let mut one = [0; 64];
-            one[one.len() - 1] = 1u64;
+            one[0] = 1u64;
             let one_biguint = BigUint4096::from(one);
             let mut actual = BigUint4096::new();
             actual.sum(&one_biguint);
@@ -40,21 +40,13 @@ pub mod integration {
     }
 
     #[test]
-    fn add_one_to_two_limbs() {
-        let expected = {
-            let mut operand = [0; 64];
-            operand[operand.len() - 1] = 1u64;
-            operand[operand.len() - 2] = 1u64;
-            BigUint4096::from(operand)
-        };
+    fn add_one_to_all_limbs() {
+        let expected = { BigUint4096::from([1; 64]) };
 
         let actual = {
-            let mut operand = [0; 64];
-            operand[operand.len() - 1] = 1u64;
-            operand[operand.len() - 2] = 1u64;
-            let one = BigUint4096::from(operand);
+            let operand = BigUint4096::from([1; 64]);
             let mut actual = BigUint4096::new();
-            actual.sum(&one);
+            actual.sum(&operand);
             actual
         };
 
