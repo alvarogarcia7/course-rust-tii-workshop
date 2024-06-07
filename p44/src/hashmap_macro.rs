@@ -5,14 +5,14 @@
 // Write an integration test fo the macro
 
 #[macro_export]
-// Source: src/macros.rs
+// Source: src/macros.rs - vec!
 macro_rules! hashmap {
     () => {
-        HashMap::<u64, u64>::new();
-    }; // ($elem:expr; $n:expr) => (
-       //     $crate::__rust_force_expr!($crate::vec::from_elem($elem, $n))
-       // );
-       // ($($x:expr),+ $(,)?) => (
+        HashMap::<u64, bool>::new();
+    };
+    ($key:expr => $value:expr) => {
+        HashMap::<u64, bool>::from([($key, $value)]);
+    }; // ($($x:expr),+ $(,)?) => (
        //     $crate::__rust_force_expr!(<[_]>::into_vec(
        //         // This rustc_box is not required, but it produces a dramatic improvement in compile
        //         // time when constructing arrays with many elements.

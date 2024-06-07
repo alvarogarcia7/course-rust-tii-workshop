@@ -1,5 +1,3 @@
-// extern crate test;
-
 pub mod tests {
     use std::collections::HashMap;
 
@@ -7,9 +5,24 @@ pub mod tests {
 
     #[test]
     pub fn empty_macro() {
-        let expected = HashMap::<u64, u64>::new();
+        let expected = HashMap::<u64, bool>::new();
 
         let actual = hashmap!();
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    pub fn one_element() {
+        // Alternative syntax with mutation
+        // let mut expected = HashMap::<u64, bool>::new();
+        // expected.insert(42, true);
+
+        let expected = HashMap::<u64, bool>::from([(42, true)]);
+
+        let actual = hashmap!(
+            42 => true
+        );
 
         assert_eq!(expected, actual);
     }
