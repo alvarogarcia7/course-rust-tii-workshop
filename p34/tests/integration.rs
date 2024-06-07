@@ -22,7 +22,6 @@ pub mod integration {
 
     #[test]
     fn add_one() {
-        let expected = build_biguint4096!(1);
         let one = build_biguint4096!(1);
 
         let actual = {
@@ -31,7 +30,7 @@ pub mod integration {
             actual
         };
 
-        assert_eq!(actual, expected);
+        assert_eq!(actual, build_biguint4096!(1));
     }
 
     #[test]
