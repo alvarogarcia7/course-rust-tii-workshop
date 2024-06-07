@@ -11,7 +11,12 @@ macro_rules! hashmap {
         HashMap::<u64, bool>::new();
     };
     ($($key:expr => $value:expr $(,)?)+) => {
-        HashMap::<u64, bool>::from([$(($key, $value) ,)*]);
+        // Source: slides 4-3.pdf, slide number 8
+        {
+            let mut hashmap = HashMap::<u64, bool>::new();
+            $(hashmap.insert($key, $value);)*
+            hashmap
+        }
     };
 }
 
