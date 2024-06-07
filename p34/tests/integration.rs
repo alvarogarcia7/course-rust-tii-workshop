@@ -1,5 +1,6 @@
 pub mod integration {
     use p34::biguint::BigUint4096;
+    use p34::build_biguint4096;
 
     #[test]
     fn are_comparable() {
@@ -21,18 +22,12 @@ pub mod integration {
 
     #[test]
     fn add_one() {
-        let expected = {
-            let mut one = [0; 64];
-            one[0] = 1u64;
-            BigUint4096::from(one)
-        };
+        let expected = build_biguint4096!(1);
+        let one = build_biguint4096!(1);
 
         let actual = {
-            let mut one = [0; 64];
-            one[0] = 1u64;
-            let one_biguint = BigUint4096::from(one);
             let mut actual = BigUint4096::new();
-            actual.sum(&one_biguint);
+            actual.sum(&one);
             actual
         };
 

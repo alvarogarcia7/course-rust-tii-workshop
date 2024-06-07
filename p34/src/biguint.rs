@@ -36,3 +36,22 @@ impl Default for BigUint4096 {
         Self::new()
     }
 }
+
+#[macro_export]
+macro_rules! build_biguint4096 {
+    () => {
+        BigUint4096::new();
+    };
+    // Define the first few values, everything else is zero
+    ($($value:expr $(,)?)+) => {
+        {
+            let mut v = [0;64];
+            let mut i = 0;
+            $(
+            v[i] = $value;
+            i += 1;
+            )*
+            BigUint4096::from(v)
+        }
+    };
+}
