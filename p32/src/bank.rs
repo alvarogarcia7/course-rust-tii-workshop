@@ -61,8 +61,8 @@ impl Bank {
                 None => self.users.push(user_from_new_bank),
                 Some(overlapping_user_index) => {
                     let old_balance = self.users[overlapping_user_index].balance;
-                    let new_balance = old_balance + user_from_new_bank.balance;
-                    self.users[overlapping_user_index].set_balance(new_balance)
+                    self.users[overlapping_user_index].balance =
+                        old_balance + user_from_new_bank.balance
                 }
             }
         }
