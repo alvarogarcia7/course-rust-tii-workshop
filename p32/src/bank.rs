@@ -131,6 +131,14 @@ impl Balance for Bank {
     }
 }
 
+#[derive(PartialEq, Debug)]
+pub enum TransferFundsError {
+    InvalidAmount,
+    OriginUserNotFound,
+    DestinationUserNotFound,
+    OriginUserNotAllowed,
+}
+
 impl Bank {
     // type of users?
     pub fn new(users: Vec<User>, name: String, credit_interest: u64, debit_interest: u64) -> Self {
@@ -152,9 +160,9 @@ impl Bank {
         origin_username: &str,
         destination_username: &str,
         amount: u64,
-    ) -> bool {
+    ) -> Result<(), TransferFundsError> {
         if amount == 0 {
-            return false;
+            return Err(TransferFundsError::InvalidAmount);
         }
         // let users_iter_mut = self.users.iter_mut();
         // let both_users_exist = users_iter_mut.filter(|user| user.name == origin_username || user.name == destination_username).count() == 2;
@@ -174,16 +182,16 @@ impl Bank {
         {
             (Some(origin_index), Some(destination_index)) => (origin_index, destination_index),
             (None, _) => {
-                return false;
+                return Err(TransferFundsError::OriginUserNotFound);
             }
             (_, None) => {
-                return false;
+                return Err(TransferFundsError::DestinationUserNotFound);
             }
         };
 
         let has_credit_limit = self.users[origin_index].max_credit() >= amount;
         if !has_credit_limit {
-            return false;
+            return Err(TransferFundsError::OriginUserNotAllowed);
         }
 
         let amount_as_i64: i64 = amount.try_into().unwrap();
@@ -199,7 +207,7 @@ impl Bank {
         // self.users[first_user_index.unwrap()]
         // second_user.map(|mut user| user.set_balance(user.get_balance()));
 
-        true
+        Ok(())
     }
 
     pub(crate) fn accrue_interest(&mut self) -> bool {
@@ -302,7 +310,7 @@ mod tests_bank {
 
         let result = bank.transfer_funds("user1", "user2", 2);
 
-        assert!(result);
+        assert_eq!(result, Ok(()));
         assert_eq!(
             bank.get_user_by_id("user1".to_string()).unwrap().balance,
             -1
@@ -321,7 +329,7 @@ mod tests_bank {
 
         let result = bank.transfer_funds("user1", "user2", 2);
 
-        assert!(!result);
+        assert_eq!(result, Err(TransferFundsError::OriginUserNotAllowed));
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
         assert_eq!(
             bank.get_user_by_id("user2".to_string()).unwrap().balance,
@@ -336,7 +344,7 @@ mod tests_bank {
 
         let result = bank.transfer_funds("NON_EXISTING", "user2", 2);
 
-        assert!(!result);
+        assert_eq!(result, Err(TransferFundsError::OriginUserNotFound));
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 1);
     }
 
@@ -347,7 +355,7 @@ mod tests_bank {
 
         let result = bank.transfer_funds("user2", "NON_EXISTING", 2);
 
-        assert!(!result);
+        assert_eq!(result, Err(TransferFundsError::DestinationUserNotFound));
         assert_eq!(bank.get_user_by_id("user2".to_string()).unwrap().balance, 1);
     }
 
@@ -359,7 +367,7 @@ mod tests_bank {
 
         let result = bank.transfer_funds("user1", "user2", 0u64);
 
-        assert!(!result);
+        assert_eq!(result, Err(TransferFundsError::InvalidAmount));
         assert_eq!(bank.get_user_by_id("user1".to_string()).unwrap().balance, 1);
         assert_eq!(
             bank.get_user_by_id("user2".to_string()).unwrap().balance,
