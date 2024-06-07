@@ -96,7 +96,7 @@ pub mod tests_poorgeneric_version {
 
     #[test]
     pub fn zero_elements() {
-        let expected = HashMap::<u64, u64>::from([]);
+        let expected = HashMap::<u64, u64>::new();
 
         let actual = hashmap_poorgeneric!(<u64, u64>
         );
