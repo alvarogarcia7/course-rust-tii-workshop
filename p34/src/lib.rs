@@ -10,9 +10,6 @@ pub mod biguint {
                 value: initial_value,
             }
         }
-    }
-
-    impl BigUint4096 {
         pub fn new() -> Self {
             Self::from([0; 64])
         }
