@@ -35,10 +35,10 @@ pub mod integration {
 
     #[test]
     fn add_one_to_all_limbs() {
-        let expected = { BigUint4096::from([1; 64]) };
+        let expected = BigUint4096::from([1; 64]);
+        let operand = BigUint4096::from([1; 64]);
 
         let actual = {
-            let operand = BigUint4096::from([1; 64]);
             let mut actual = BigUint4096::new();
             actual.sum(&operand);
             actual

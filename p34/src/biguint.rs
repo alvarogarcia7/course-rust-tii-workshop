@@ -54,4 +54,12 @@ macro_rules! build_biguint4096 {
             BigUint4096::from(v)
         }
     };
+    // AGB: Don't do this because we allow two ways of creating from an array - NO
+    // AGB: Don't do this because we force the user to specify 1u64 as the literal - NO
+    // Define all values using the array syntax
+    // ([$value:expr; $len:expr]) => {
+    //     {
+    //         BigUint4096::from([$value; $len])
+    //     }
+    // };
 }
