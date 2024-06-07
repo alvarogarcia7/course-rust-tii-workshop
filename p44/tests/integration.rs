@@ -1,4 +1,4 @@
-pub mod tests {
+pub mod tests_basic_version {
     use std::collections::HashMap;
 
     use p44::hashmap;
@@ -83,6 +83,35 @@ pub mod tests {
             42 => true,
             43 => true,
             44 => false
+        );
+
+        assert_eq!(expected, actual);
+    }
+}
+
+pub mod tests_poorgeneric_version {
+    use std::collections::HashMap;
+
+    use p44::hashmap_poorgeneric;
+
+    #[test]
+    pub fn zero_elements() {
+        let expected = HashMap::<u64, u64>::from([]);
+
+        let actual = hashmap_poorgeneric!(<u64, u64>
+        );
+
+        assert_eq!(expected, actual);
+    }
+
+    #[test]
+    pub fn n_elements_without_trailing_comma() {
+        let expected = HashMap::<u64, u64>::from([(42, 42), (43, 43), (44, 44)]);
+
+        let actual = hashmap_poorgeneric!(<u64, u64>,
+            42 => 42,
+            43 => 43,
+            44 => 44,
         );
 
         assert_eq!(expected, actual);
