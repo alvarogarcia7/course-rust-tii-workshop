@@ -175,7 +175,7 @@ impl<const N: usize> Default for BigUintGeneric<N> {
 }
 
 #[macro_export]
-macro_rules! build_biguint4096 {
+macro_rules! build_biguint {
     () => {
         BigUintGeneric::new();
     };
