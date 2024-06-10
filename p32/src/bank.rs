@@ -123,7 +123,7 @@ impl Balance for Bank {
             .map(|user| user.balance)
             .sum();
 
-        let to: u64 = (-total_liabilities).try_into().unwrap();
+        let to: u64 = total_liabilities.unsigned_abs();
         BalanceSheet {
             assets: total_assets,
             liabilities: to,
