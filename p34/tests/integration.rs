@@ -1,21 +1,21 @@
 pub mod integration {
-    use p34::biguint::BigUint4096;
+    use p34::biguint::BigUintGeneric;
     use p34::build_biguint4096;
 
     #[test]
     fn are_comparable() {
-        let expected = BigUint4096::new();
+        let expected = BigUintGeneric::<64>::new();
 
-        let actual = BigUint4096::new();
+        let actual = BigUintGeneric::<64>::new();
 
         assert_eq!(actual, expected);
     }
 
     #[test]
     fn default_to_zero() {
-        let expected = BigUint4096::new();
+        let expected = BigUintGeneric::<64>::new();
 
-        let actual = BigUint4096::from([0; 64]);
+        let actual = BigUintGeneric::<64>::from([0; 64]);
 
         assert_eq!(actual, expected);
     }
@@ -25,7 +25,7 @@ pub mod integration {
         let one = build_biguint4096!(1);
 
         let actual = {
-            let mut actual = BigUint4096::new();
+            let mut actual = BigUintGeneric::<64>::new();
             actual.sum(&one);
             actual
         };
@@ -35,11 +35,11 @@ pub mod integration {
 
     #[test]
     fn add_one_to_all_limbs() {
-        let expected = BigUint4096::from([1; 64]);
-        let operand = BigUint4096::from([1; 64]);
+        let expected = BigUintGeneric::<64>::from([1; 64]);
+        let operand = BigUintGeneric::<64>::from([1; 64]);
 
         let actual = {
-            let mut actual = BigUint4096::new();
+            let mut actual = BigUintGeneric::<64>::new();
             actual.sum(&operand);
             actual
         };
@@ -165,7 +165,7 @@ pub mod integration {
     #[test]
     #[should_panic]
     fn overflow_the_structure_should_panic() {
-        let mut operand_1 = BigUint4096::from([u64::MAX; 64]);
+        let mut operand_1 = BigUintGeneric::<64>::from([u64::MAX; 64]);
         let operand_2 = build_biguint4096!(100);
 
         operand_1.sum(&operand_2);

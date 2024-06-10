@@ -10,21 +10,30 @@
 /// BigUint64
 /// Note: the Least Significant Bit (LSB) is stored on position 0
 #[derive(Debug, PartialEq)]
-pub struct BigUint4096 {
-    value: [u64; 64],
+pub struct BigUintGeneric<const SIZE: usize> {
+    value: [u64; SIZE],
 }
+
+// Source: https://doc.rust-lang.org/reference/items/generics.html
+// // Used as a field of a struct.
+// struct Foo<const N: usize>([i32; N]);
+//
+// impl<const N: usize> Foo<N> {
+//     // Used as an associated constant.
+//     const CONST: usize = N * 4;
+// }
 
 /// Bad implementation of a BigUint4096
 /// Warning: There might be defects. Do not use for production, this is only a sandbox where to test the implementation.
-impl BigUint4096 {
-    pub fn from(initial_value: [u64; 64]) -> Self {
+impl<const N: usize> BigUintGeneric<N> {
+    pub fn from(initial_value: [u64; N]) -> Self {
         Self {
             value: initial_value,
         }
     }
 
     pub fn new() -> Self {
-        Self::from([0; 64])
+        Self::from([0; N])
     }
     pub fn sum(&mut self, another: &Self) {
         let mut carry = 0;
@@ -36,7 +45,7 @@ impl BigUint4096 {
         }
     }
 
-    pub fn multiply(&mut self, another: &BigUint4096) {
+    pub fn multiply(&mut self, another: &BigUintGeneric<N>) {
         let mut carry = 0;
         for i in 0..self.value.len() {
             let [x, carry1] = Self::multiply_two_numbers(self.value[i], another.value[i]);
@@ -159,7 +168,7 @@ impl BigUint4096 {
     }
 }
 
-impl Default for BigUint4096 {
+impl<const N: usize> Default for BigUintGeneric<N> {
     fn default() -> Self {
         Self::new()
     }
@@ -168,7 +177,7 @@ impl Default for BigUint4096 {
 #[macro_export]
 macro_rules! build_biguint4096 {
     () => {
-        BigUint4096::new();
+        BigUintGeneric::<64>::new();
     };
     // Define the first few values, everything else is zero
     ($($value:expr $(,)?)+) => {
@@ -179,7 +188,7 @@ macro_rules! build_biguint4096 {
             v[i] = $value;
             i += 1;
             )*
-            BigUint4096::from(v)
+            BigUintGeneric::<64>::from(v)
         }
     };
     // AGB: Don't do this because we allow two ways of creating from an array - NO
