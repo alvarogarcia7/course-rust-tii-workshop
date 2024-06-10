@@ -7,4 +7,7 @@ members = [
     "p34",
     "p44",
     "p32",
+    "p62/libminiaes",
+    "p62/miniaes-sys",
+    "p62/miniaes",
 ]
