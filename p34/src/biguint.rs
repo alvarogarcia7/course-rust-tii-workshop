@@ -14,6 +14,9 @@ pub struct BigUintGeneric<const SIZE: usize> {
     value: [u64; SIZE],
 }
 
+// Source: https://doc.rust-lang.org/reference/items/type-aliases.html
+pub type BigUint4096 = BigUintGeneric<64>;
+
 // Source: https://doc.rust-lang.org/reference/items/generics.html
 // // Used as a field of a struct.
 // struct Foo<const N: usize>([i32; N]);
@@ -195,7 +198,7 @@ macro_rules! build_biguint_max_64 {
             v[i] = $value;
             i += 1;
             )*
-            BigUintGeneric::from(v)
+            BigUint4096::from(v)
         }
     };
     // AGB: Don't do this because we allow two ways of creating from an array - NO
