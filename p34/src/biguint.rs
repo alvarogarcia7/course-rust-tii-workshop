@@ -16,8 +16,8 @@ pub struct BigUintGeneric<const SIZE: usize> {
     value: [u64; SIZE],
 }
 
-// Source: https://doc.rust-lang.org/reference/items/type-aliases.html
-pub type BigUint4096 = BigUintGeneric<64>;
+// // Source: https://doc.rust-lang.org/reference/items/type-aliases.html
+// pub type BigUint4096 = BigUintGeneric<64>;
 
 // Source: https://doc.rust-lang.org/reference/items/generics.html
 // // Used as a field of a struct.
@@ -196,6 +196,7 @@ impl<const N: usize> Default for BigUintGeneric<N> {
     }
 }
 
+// Reference: https://doc.rust-lang.org/reference/macros-by-example.html#metavariables
 #[macro_export]
 macro_rules! build_biguint_max_64 {
     () => {
@@ -229,3 +230,17 @@ macro_rules! build_biguint_max_64 {
     //     }
     // };
 }
+
+#[macro_export]
+macro_rules! new_biguints {
+   // Define the first few values, everything else is zero
+    ($($name:ident , $len:literal ;)+) => {
+            $(
+            pub type $name = BigUintGeneric<$len>;
+            )*
+    };
+}
+
+new_biguints!(
+BigUint1024, 16; BigUint2048, 32; BigUint4096, 64; BigUint8192, 128;
+);

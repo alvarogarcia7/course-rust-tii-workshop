@@ -1,7 +1,7 @@
 pub mod integration {
     use std::ops::{Add, Mul};
 
-    use p34::biguint::BigUint4096;
+    use p34::biguint::*;
     use p34::build_biguint_max_64;
 
     #[test]
@@ -173,5 +173,13 @@ pub mod integration {
         let operand_2 = build_biguint_max_64!(100);
 
         let _ = operand_1.add(operand_2);
+    }
+
+    #[test]
+    fn all_types_exist() {
+        BigUint1024::default();
+        BigUint2048::default();
+        BigUint4096::default();
+        BigUint8192::default();
     }
 }
