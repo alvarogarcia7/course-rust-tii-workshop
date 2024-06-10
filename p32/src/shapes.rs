@@ -21,8 +21,9 @@ pub trait Shape {
     fn perimeter(&self) -> u64;
     fn area(&self) -> f64;
     fn scale(&mut self, ratio: f32);
-    #[allow(dead_code)]
-    fn area_to_perimeter(&self) -> f64;
+    fn area_to_perimeter(&self) -> f64 {
+        (self.area() as u64 / self.perimeter()) as f64
+    }
     // Dynamic dispatch is not recommended
     // Enum (= tagged union) of result
     // fn biggest_area<'a, T: Shape, T2: Shape>(my_shape: &'a T2, another: &'a T) -> &'a T { -> Note: forces Shape::biggest_area -> inconvenient
@@ -56,10 +57,6 @@ impl Shape for Square {
 
     fn scale(&mut self, ratio: f32) {
         self.sides = (self.sides as f32 * ratio) as u64
-    }
-
-    fn area_to_perimeter(&self) -> f64 {
-        self.area() / self.perimeter() as f64
     }
 
     // fn print_properties(&self) {
@@ -96,10 +93,6 @@ impl Shape for Rectangle {
         self.height = (ratio * self.height as f32) as u64;
     }
 
-    fn area_to_perimeter(&self) -> f64 {
-        (self.area() as u64 / self.perimeter()) as f64
-    }
-
     // fn print_properties(&self) {
     //     todo!()
     // }
@@ -132,10 +125,6 @@ impl Shape for Circle {
 
     fn scale(&mut self, ratio: f32) {
         self.radius = (self.radius as f32 * ratio) as u64
-    }
-
-    fn area_to_perimeter(&self) -> f64 {
-        todo!()
     }
 
     // fn print_properties(&self) {
