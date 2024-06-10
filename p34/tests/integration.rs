@@ -1,6 +1,6 @@
 pub mod integration {
     use p34::biguint::BigUintGeneric;
-    use p34::build_biguint;
+    use p34::build_biguint_max_64;
 
     #[test]
     fn are_comparable() {
@@ -22,7 +22,7 @@ pub mod integration {
 
     #[test]
     fn add_one() {
-        let one = build_biguint!(1);
+        let one = build_biguint_max_64!(1);
 
         let actual = {
             let mut actual = BigUintGeneric::<64>::new();
@@ -30,7 +30,7 @@ pub mod integration {
             actual
         };
 
-        assert_eq!(actual, build_biguint!(1));
+        assert_eq!(actual, build_biguint_max_64!(1));
     }
 
     #[test]
@@ -50,9 +50,9 @@ pub mod integration {
     #[test]
     fn add_one_to_all_limbs_with_carry() {
         let m = u64::MAX;
-        let mut _operand_1 = build_biguint!(m, m, 0, 0, 0, m, 0);
-        let _____operand_2 = build_biguint!(1, 0, 0, 0, 0, 1, 1);
-        let ______expected = build_biguint!(0, 0, 1, 0, 0, 0, 2);
+        let mut _operand_1 = build_biguint_max_64!(m, m, 0, 0, 0, m, 0);
+        let _____operand_2 = build_biguint_max_64!(1, 0, 0, 0, 0, 1, 1);
+        let ______expected = build_biguint_max_64!(0, 0, 1, 0, 0, 0, 2);
 
         _operand_1.sum(&_____operand_2);
 
@@ -61,9 +61,9 @@ pub mod integration {
 
     #[test]
     fn add_to_two_limbs_with_carry() {
-        let expected = build_biguint!(99, 0, 1);
-        let mut operand_1 = build_biguint!(u64::MAX, u64::MAX);
-        let operand_2 = build_biguint!(100);
+        let expected = build_biguint_max_64!(99, 0, 1);
+        let mut operand_1 = build_biguint_max_64!(u64::MAX, u64::MAX);
+        let operand_2 = build_biguint_max_64!(100);
 
         operand_1.sum(&operand_2);
 
@@ -72,10 +72,10 @@ pub mod integration {
 
     #[test]
     fn multiply_one_limb() {
-        let mut expected = build_biguint!(u64::MAX);
-        expected.sum(&build_biguint!(u64::MAX));
-        let mut operand_1 = build_biguint!(u64::MAX);
-        let operand_2 = build_biguint!(2);
+        let mut expected = build_biguint_max_64!(u64::MAX);
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        let mut operand_1 = build_biguint_max_64!(u64::MAX);
+        let operand_2 = build_biguint_max_64!(2);
 
         operand_1.multiply(&operand_2);
 
@@ -84,9 +84,9 @@ pub mod integration {
 
     #[test]
     fn multiply_one_limb_without_carry() {
-        let mut operand_1 = build_biguint!(10);
-        let operand_2 = build_biguint!(10);
-        let expected = build_biguint!(100);
+        let mut operand_1 = build_biguint_max_64!(10);
+        let operand_2 = build_biguint_max_64!(10);
+        let expected = build_biguint_max_64!(100);
 
         operand_1.multiply(&operand_2);
 
@@ -95,9 +95,9 @@ pub mod integration {
 
     #[test]
     fn multiply_one_limb_with_carry() {
-        let expected = build_biguint!(0, 4);
-        let mut operand_1 = build_biguint!(0, 2);
-        let operand_2 = build_biguint!(0, 2);
+        let expected = build_biguint_max_64!(0, 4);
+        let mut operand_1 = build_biguint_max_64!(0, 2);
+        let operand_2 = build_biguint_max_64!(0, 2);
 
         operand_1.multiply(&operand_2);
 
@@ -106,21 +106,21 @@ pub mod integration {
 
     #[test]
     fn multiply_one_limb_times_10() {
-        let mut expected = build_biguint!(u64::MAX);
+        let mut expected = build_biguint_max_64!(u64::MAX);
 
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        expected.sum(&build_biguint!(u64::MAX));
-        let mut operand_1 = build_biguint!(u64::MAX);
-        let operand_2 = build_biguint!(10);
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        expected.sum(&build_biguint_max_64!(u64::MAX));
+        let mut operand_1 = build_biguint_max_64!(u64::MAX);
+        let operand_2 = build_biguint_max_64!(10);
 
-        let expected_manual = build_biguint!(u64::MAX - 9, 9);
+        let expected_manual = build_biguint_max_64!(u64::MAX - 9, 9);
 
         assert_eq!(expected_manual, expected);
 
@@ -131,18 +131,18 @@ pub mod integration {
 
     #[test]
     fn multiply_one_limb_times_100() {
-        let mut expected_sum = build_biguint!(u64::MAX);
+        let mut expected_sum = build_biguint_max_64!(u64::MAX);
         let limit = 100;
         for _ in 0..limit {
-            expected_sum.sum(&build_biguint!(u64::MAX));
+            expected_sum.sum(&build_biguint_max_64!(u64::MAX));
         }
 
-        let expected_manual = build_biguint!(u64::MAX - limit, limit);
+        let expected_manual = build_biguint_max_64!(u64::MAX - limit, limit);
 
         assert_eq!(expected_manual, expected_sum);
 
-        let mut operand_1 = build_biguint!(u64::MAX);
-        let operand_2 = build_biguint!(limit + 1);
+        let mut operand_1 = build_biguint_max_64!(u64::MAX);
+        let operand_2 = build_biguint_max_64!(limit + 1);
 
         operand_1.multiply(&operand_2);
 
@@ -151,13 +151,13 @@ pub mod integration {
 
     #[test]
     fn sum_repeated_times() {
-        let mut expected_sum = build_biguint!(u64::MAX);
+        let mut expected_sum = build_biguint_max_64!(u64::MAX);
         let limit = 100;
         for _ in 0..limit {
-            expected_sum.sum(&build_biguint!(u64::MAX));
+            expected_sum.sum(&build_biguint_max_64!(u64::MAX));
         }
 
-        let expected_manual = build_biguint!(u64::MAX - limit, limit);
+        let expected_manual = build_biguint_max_64!(u64::MAX - limit, limit);
 
         assert_eq!(expected_manual, expected_sum);
     }
@@ -166,7 +166,7 @@ pub mod integration {
     #[should_panic]
     fn overflow_the_structure_should_panic() {
         let mut operand_1 = BigUintGeneric::<64>::from([u64::MAX; 64]);
-        let operand_2 = build_biguint!(100);
+        let operand_2 = build_biguint_max_64!(100);
 
         operand_1.sum(&operand_2);
     }
