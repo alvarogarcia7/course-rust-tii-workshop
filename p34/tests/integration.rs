@@ -54,6 +54,18 @@ pub mod integration {
     }
 
     #[test]
+    fn add_using_the_operator() {
+        let m = u64::MAX;
+        let mut _operand_1 = build_biguint_max_64!(m, m, 0, 0, 0, m, 0);
+        let _____operand_2 = build_biguint_max_64!(1, 0, 0, 0, 0, 1, 1);
+        let ______expected = build_biguint_max_64!(0, 0, 1, 0, 0, 0, 2);
+
+        let actual = _operand_1 + _____operand_2;
+
+        assert_eq!(actual, ______expected);
+    }
+
+    #[test]
     fn add_to_two_limbs_with_carry() {
         let expected = build_biguint_max_64!(99, 0, 1);
         let operand_1 = build_biguint_max_64!(u64::MAX, u64::MAX);
