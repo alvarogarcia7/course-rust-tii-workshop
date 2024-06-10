@@ -14,6 +14,8 @@ pub struct BigUint4096 {
     value: [u64; 64],
 }
 
+/// Bad implementation of a BigUint4096
+/// Warning: There might be defects. Do not use for production, this is only a sandbox where to test the implementation.
 impl BigUint4096 {
     pub fn from(initial_value: [u64; 64]) -> Self {
         Self {

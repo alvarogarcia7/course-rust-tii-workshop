@@ -107,6 +107,7 @@ pub mod integration {
     #[test]
     fn multiply_one_limb_times_10() {
         let mut expected = build_biguint4096!(u64::MAX);
+
         expected.sum(&build_biguint4096!(u64::MAX));
         expected.sum(&build_biguint4096!(u64::MAX));
         expected.sum(&build_biguint4096!(u64::MAX));
@@ -119,9 +120,46 @@ pub mod integration {
         let mut operand_1 = build_biguint4096!(u64::MAX);
         let operand_2 = build_biguint4096!(10);
 
+        let expected_manual = build_biguint4096!(u64::MAX - 9, 9);
+
+        assert_eq!(expected_manual, expected);
+
         operand_1.multiply(&operand_2);
 
         assert_eq!(operand_1, expected);
+    }
+
+    #[test]
+    fn multiply_one_limb_times_100() {
+        let mut expected_sum = build_biguint4096!(u64::MAX);
+        let limit = 100;
+        for _ in 0..limit {
+            expected_sum.sum(&build_biguint4096!(u64::MAX));
+        }
+
+        let expected_manual = build_biguint4096!(u64::MAX - limit, limit);
+
+        assert_eq!(expected_manual, expected_sum);
+
+        let mut operand_1 = build_biguint4096!(u64::MAX);
+        let operand_2 = build_biguint4096!(limit + 1);
+
+        operand_1.multiply(&operand_2);
+
+        assert_eq!(operand_1, expected_sum);
+    }
+
+    #[test]
+    fn sum_repeated_times() {
+        let mut expected_sum = build_biguint4096!(u64::MAX);
+        let limit = 100;
+        for _ in 0..limit {
+            expected_sum.sum(&build_biguint4096!(u64::MAX));
+        }
+
+        let expected_manual = build_biguint4096!(u64::MAX - limit, limit);
+
+        assert_eq!(expected_manual, expected_sum);
     }
 
     #[test]
