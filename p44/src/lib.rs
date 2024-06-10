@@ -1,2 +1,2 @@
-pub mod hashmap_macro;
 mod biguint_macro;
+pub mod hashmap_macro;
