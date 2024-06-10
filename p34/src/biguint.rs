@@ -177,7 +177,7 @@ impl<const N: usize> Default for BigUintGeneric<N> {
 #[macro_export]
 macro_rules! build_biguint4096 {
     () => {
-        BigUintGeneric::<64>::new();
+        BigUintGeneric::new();
     };
     // Define the first few values, everything else is zero
     ($($value:expr $(,)?)+) => {
@@ -188,7 +188,7 @@ macro_rules! build_biguint4096 {
             v[i] = $value;
             i += 1;
             )*
-            BigUintGeneric::<64>::from(v)
+            BigUintGeneric::from(v)
         }
     };
     // AGB: Don't do this because we allow two ways of creating from an array - NO
