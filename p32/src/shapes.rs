@@ -9,6 +9,7 @@
 
 use std::f64::consts::PI;
 
+#[derive(PartialEq, Debug)]
 pub enum Either<Left, Right> {
     Left(Left),
     Right(Right),
@@ -22,7 +23,6 @@ pub trait Shape {
     fn scale(&mut self, ratio: f32);
     #[allow(dead_code)]
     fn area_to_perimeter(&self) -> f64;
-    #[allow(dead_code)]
     // Dynamic dispatch is not recommended
     // Enum (= tagged union) of result
     // fn biggest_area<'a, T: Shape, T2: Shape>(my_shape: &'a T2, another: &'a T) -> &'a T { -> Note: forces Shape::biggest_area -> inconvenient
@@ -34,10 +34,11 @@ pub trait Shape {
             Either::Right(another)
         }
     }
-    #[allow(dead_code)]
-    fn print_properties(&self);
+    // #[allow(dead_code)]
+    // fn print_properties(&self);
 }
 
+#[derive(PartialEq, Debug)]
 struct Square {
     sides: u64,
 }
@@ -61,9 +62,9 @@ impl Shape for Square {
         self.area() / self.perimeter() as f64
     }
 
-    fn print_properties(&self) {
-        todo!()
-    }
+    // fn print_properties(&self) {
+    //     todo!()
+    // }
 }
 
 impl Square {
@@ -71,6 +72,8 @@ impl Square {
         Self { sides }
     }
 }
+
+#[derive(PartialEq, Debug)]
 
 struct Rectangle {
     width: u64,
@@ -97,9 +100,9 @@ impl Shape for Rectangle {
         (self.area() as u64 / self.perimeter()) as f64
     }
 
-    fn print_properties(&self) {
-        todo!()
-    }
+    // fn print_properties(&self) {
+    //     todo!()
+    // }
 }
 
 impl Rectangle {
@@ -108,6 +111,7 @@ impl Rectangle {
     }
 }
 
+#[derive(PartialEq, Debug)]
 struct Circle {
     radius: u64,
 }
@@ -134,14 +138,39 @@ impl Shape for Circle {
         todo!()
     }
 
-    fn print_properties(&self) {
-        todo!()
-    }
+    // fn print_properties(&self) {
+    //     todo!()
+    // }
 }
 
 impl Circle {
     pub fn new(radius: u64) -> Self {
         Self { radius }
+    }
+}
+
+#[derive(PartialEq, Debug)]
+struct Point {}
+
+impl Shape for Point {
+    const NAME: &'static str = "Point";
+
+    fn perimeter(&self) -> u64 {
+        0
+    }
+
+    fn area(&self) -> f64 {
+        0f64
+    }
+
+    fn scale(&mut self, _ratio: f32) {}
+
+    fn area_to_perimeter(&self) -> f64 {
+        f64::NAN
+    }
+
+    fn biggest_area<'a, 'b, T: Shape>(&'a self, another: &'b T) -> Either<&'a Self, &'b T> {
+        Either::Right(another)
     }
 }
 
@@ -229,5 +258,56 @@ mod tests_circle {
         shape.scale(5f32);
 
         assert_eq!(shape.area(), PI * (5u64 * 4u64).pow(2) as f64)
+    }
+}
+
+#[cfg(test)]
+mod tests_point {
+    use super::*;
+
+    #[test]
+    pub fn perimeter() {
+        let shape = Point {};
+
+        let actual = shape.perimeter();
+
+        assert_eq!(actual, 0);
+    }
+
+    #[test]
+    pub fn area() {
+        let shape = Point {};
+
+        let actual = shape.area();
+
+        assert_eq!(actual, 0f64);
+    }
+
+    #[test]
+    pub fn scale() {
+        let mut shape = Point {};
+
+        shape.scale(1f32);
+
+        assert_eq!(shape.area(), 0f64);
+    }
+
+    #[test]
+    pub fn area_to_perimeter() {
+        let shape = Point {};
+
+        let actual = shape.area_to_perimeter();
+
+        assert!(f64::is_nan(actual))
+    }
+
+    #[test]
+    pub fn biggest_area() {
+        let shape = Point {};
+        let another = Circle::new(3);
+
+        let actual = shape.biggest_area(&another);
+
+        assert_eq!(actual, Either::Right(&another))
     }
 }
