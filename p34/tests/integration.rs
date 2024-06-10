@@ -44,25 +44,29 @@ pub mod integration {
     #[test]
     fn add_one_to_all_limbs_with_carry() {
         let m = u64::MAX;
-        let mut _operand_1 = build_biguint_max_64!(m, m, 0, 0, 0, m, 0);
-        let _____operand_2 = build_biguint_max_64!(1, 0, 0, 0, 0, 1, 1);
-        let ______expected = build_biguint_max_64!(0, 0, 1, 0, 0, 0, 2);
+        let (operand_1, operand_2, expected) = (
+            build_biguint_max_64!(m, m, 0, 0, 0, m, 0),
+            build_biguint_max_64!(1, 0, 0, 0, 0, 1, 1),
+            build_biguint_max_64!(0, 0, 1, 0, 0, 0, 2),
+        );
 
-        let actual = _operand_1.add(_____operand_2);
+        let actual = operand_1.add(operand_2);
 
-        assert_eq!(actual, ______expected);
+        assert_eq!(actual, expected);
     }
 
     #[test]
     fn add_using_the_operator() {
         let m = u64::MAX;
-        let mut _operand_1 = build_biguint_max_64!(m, m, 0, 0, 0, m, 0);
-        let _____operand_2 = build_biguint_max_64!(1, 0, 0, 0, 0, 1, 1);
-        let ______expected = build_biguint_max_64!(0, 0, 1, 0, 0, 0, 2);
+        let (operand_1, operand_2, expected) = (
+            build_biguint_max_64!(m, m, 0, 0, 0, m, 0),
+            build_biguint_max_64!(1, 0, 0, 0, 0, 1, 1),
+            build_biguint_max_64!(0, 0, 1, 0, 0, 0, 2),
+        );
 
-        let actual = _operand_1 + _____operand_2;
+        let actual = operand_1 + operand_2;
 
-        assert_eq!(actual, ______expected);
+        assert_eq!(actual, expected);
     }
 
     #[test]
