@@ -7,6 +7,8 @@
 // encoded String (be careful about endianness)
 // ● Add integration tests for the type
 
+use std::ops::{Add, Mul};
+
 /// BigUint64
 /// Note: the Least Significant Bit (LSB) is stored on position 0
 #[derive(Debug, PartialEq)]
@@ -26,6 +28,47 @@ pub type BigUint4096 = BigUintGeneric<64>;
 //     const CONST: usize = N * 4;
 // }
 
+// STD OPS for REFERECES
+impl<const SIZE: usize> Add for BigUintGeneric<SIZE> {
+    type Output = BigUintGeneric<SIZE>;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        let mut result: [u64; SIZE] = [0; SIZE];
+        let mut carry = 0;
+        for i in 0..SIZE {
+            carry = self._sum_one_limb(&mut result, i, &rhs, carry)
+        }
+        if carry != 0 {
+            panic!("You are overflowing the structure")
+        } else {
+            BigUintGeneric::<SIZE>::from(result)
+        }
+    }
+}
+
+impl<const SIZE: usize> Mul for BigUintGeneric<SIZE> {
+    type Output = BigUintGeneric<SIZE>;
+
+    fn mul(self, rhs: Self) -> Self::Output {
+        let mut carry = 0;
+        let mut res: [u64; SIZE] = [0; SIZE];
+        // Detected by https://rust-lang.github.io/rust-clippy/master/index.html#/needless_range_loop
+        for (i, item) in res.iter_mut().enumerate().take(SIZE) {
+            let [x, carry1] = Self::multiply_two_numbers(self.value[i], rhs.value[i]);
+            let (y, carry2) = Self::sum_two_numbers(x, carry);
+
+            *item = y;
+
+            carry = carry2 + carry1
+        }
+        if carry != 0 {
+            panic!("You are overflowing the structure")
+        } else {
+            BigUintGeneric::from(res)
+        }
+    }
+}
+
 /// Bad implementation of a BigUint4096
 /// Warning: There might be defects. Do not use for production, this is only a sandbox where to test the implementation.
 impl<const N: usize> BigUintGeneric<N> {
@@ -37,30 +80,6 @@ impl<const N: usize> BigUintGeneric<N> {
 
     pub fn new() -> Self {
         Self::from([0; N])
-    }
-    pub fn sum(&mut self, another: &Self) {
-        let mut carry = 0;
-        for i in 0..self.value.len() {
-            carry = self.sum_one_limb(i, another, carry)
-        }
-        if carry != 0 {
-            panic!("You are overflowing the structure")
-        }
-    }
-
-    pub fn multiply(&mut self, another: &BigUintGeneric<N>) {
-        let mut carry = 0;
-        for i in 0..self.value.len() {
-            let [x, carry1] = Self::multiply_two_numbers(self.value[i], another.value[i]);
-            let (y, carry2) = Self::sum_two_numbers(x, carry);
-
-            self.value[i] = y;
-
-            carry = carry2 + carry1
-        }
-        if carry != 0 {
-            panic!("You are overflowing the structure")
-        }
     }
 
     fn sum_two_numbers(a: u64, b: u64) -> (u64, u64) {
@@ -79,11 +98,11 @@ impl<const N: usize> BigUintGeneric<N> {
             Some(non_overflow) => (non_overflow, 0),
         }
     }
-    fn sum_one_limb(&mut self, i: usize, another: &Self, carry: u64) -> u64 {
+    fn _sum_one_limb(&self, res: &mut [u64; N], i: usize, another: &Self, carry: u64) -> u64 {
         let (x, carry1) = Self::sum_two_numbers(self.value[i], another.value[i]);
         let (y, carry2) = Self::sum_two_numbers(x, carry);
 
-        self.value[i] = y;
+        res[i] = y;
 
         carry2 + carry1
     }
