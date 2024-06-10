@@ -86,7 +86,7 @@ pub struct Bank {
 }
 
 impl Bank {
-    pub(crate) fn merge(&mut self, another: Bank) -> bool {
+    pub(crate) fn merge(&mut self, another: Bank) -> Result<(), MergeError> {
         for user_from_new_bank in another.users {
             let user_name = &user_from_new_bank.name;
             match self.get_user_index_by_id(user_name) {
@@ -98,7 +98,7 @@ impl Bank {
                 }
             }
         }
-        true
+        Ok(())
     }
 }
 
@@ -138,6 +138,9 @@ pub enum TransferFundsError {
     DestinationUserNotFound,
     OriginUserNotAllowed,
 }
+
+#[derive(PartialEq, Debug)]
+pub enum MergeError {}
 
 impl Bank {
     // type of users?
@@ -423,7 +426,7 @@ mod tests_bank {
 
         let result = bank1.merge(bank2);
 
-        assert!(result);
+        assert_eq!(result, Ok(()));
         assert_eq!(
             bank1.get_user_by_id("user1".to_string()).unwrap().balance,
             1
@@ -467,7 +470,7 @@ mod tests_bank {
 
         let result = bank1.merge(bank2);
 
-        assert!(result);
+        assert_eq!(result, Ok(()));
         assert_eq!(
             bank1.get_user_by_id(user1.to_string()).unwrap().balance,
             balance_at_first_bank + balance_at_second_bank
