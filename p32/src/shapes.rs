@@ -9,6 +9,11 @@
 
 use std::f64::consts::PI;
 
+pub enum Either<Left, Right> {
+    Left(Left),
+    Right(Right),
+}
+
 pub trait Shape {
     const NAME: &'static str;
 
@@ -18,11 +23,15 @@ pub trait Shape {
     #[allow(dead_code)]
     fn area_to_perimeter(&self) -> f64;
     #[allow(dead_code)]
-    fn biggest_area<'a>(&'a self, another: &'a Self) -> &Self {
+    // Dynamic dispatch is not recommended
+    // Enum (= tagged union) of result
+    // fn biggest_area<'a, T: Shape, T2: Shape>(my_shape: &'a T2, another: &'a T) -> &'a T { -> Note: forces Shape::biggest_area -> inconvenient
+    // fn biggest_area<'a, T: Shape, T2: Shape>(self: &Self, another: &'a T) -> &'a T { -> Note: don't use this in practice. Create a method for Box<Self>, for dot-syntax
+    fn biggest_area<'a, 'b, T: Shape>(&'a self, another: &'b T) -> Either<&'a Self, &'b T> {
         if self.area() > another.area() {
-            self
+            Either::Left(self)
         } else {
-            another
+            Either::Right(another)
         }
     }
     #[allow(dead_code)]
