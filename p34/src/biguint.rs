@@ -182,6 +182,13 @@ macro_rules! build_biguint {
     // Define the first few values, everything else is zero
     ($($value:expr $(,)?)+) => {
         {
+            // let mut v: Vec<u64> = vec![];
+            // $(
+            // v.push($value);
+            // )*
+            // // TODO Question: by letting the `let variable` define the type, how may I get the length of the needed array?. How do I know if it's 64 or 92, etc?
+            // BigUintGeneric::from(v)
+            // TODO: Defect: this macro can only generate up to BigUintGeneric::<64>
             let mut v = [0;64];
             let mut i = 0;
             $(
