@@ -236,11 +236,16 @@ macro_rules! new_biguints {
    // Define the first few values, everything else is zero
     ($($name:ident , $len:literal ;)+) => {
             $(
+            // https://stackoverflow.com/questions/33999341/generating-documentation-in-macros
+            #[doc=concat!("BigUintGeneric for ", stringify!($len), " elements")]
             pub type $name = BigUintGeneric<$len>;
             )*
     };
 }
 
 new_biguints!(
-BigUint1024, 16; BigUint2048, 32; BigUint4096, 64; BigUint8192, 128;
+    BigUint1024, 16;
+    BigUint2048, 32;
+    BigUint4096, 64;
+    BigUint8192, 128;
 );
