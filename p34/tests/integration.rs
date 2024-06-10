@@ -71,6 +71,60 @@ pub mod integration {
     }
 
     #[test]
+    fn multiply_one_limb() {
+        let mut expected = build_biguint4096!(u64::MAX);
+        expected.sum(&build_biguint4096!(u64::MAX));
+        let mut operand_1 = build_biguint4096!(u64::MAX);
+        let operand_2 = build_biguint4096!(2);
+
+        operand_1.multiply(&operand_2);
+
+        assert_eq!(operand_1, expected);
+    }
+
+    #[test]
+    fn multiply_one_limb_without_carry() {
+        let mut operand_1 = build_biguint4096!(10);
+        let operand_2 = build_biguint4096!(10);
+        let expected = build_biguint4096!(100);
+
+        operand_1.multiply(&operand_2);
+
+        assert_eq!(operand_1, expected);
+    }
+
+    #[test]
+    fn multiply_one_limb_with_carry() {
+        let expected = build_biguint4096!(0, 4);
+        let mut operand_1 = build_biguint4096!(0, 2);
+        let operand_2 = build_biguint4096!(0, 2);
+
+        operand_1.multiply(&operand_2);
+
+        assert_eq!(operand_1, expected);
+    }
+
+    #[test]
+    fn multiply_one_limb_times_10() {
+        let mut expected = build_biguint4096!(u64::MAX);
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        expected.sum(&build_biguint4096!(u64::MAX));
+        let mut operand_1 = build_biguint4096!(u64::MAX);
+        let operand_2 = build_biguint4096!(10);
+
+        operand_1.multiply(&operand_2);
+
+        assert_eq!(operand_1, expected);
+    }
+
+    #[test]
     #[should_panic]
     fn overflow_the_structure_should_panic() {
         let mut operand_1 = BigUint4096::from([u64::MAX; 64]);
